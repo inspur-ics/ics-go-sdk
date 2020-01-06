@@ -130,3 +130,26 @@ func Login(ctx context.Context, r restful.RestAPITripper, req *types.Login) (*ty
 
     return &response, err
 }
+
+func GetTaskInfo(ctx context.Context, r restful.RestAPITripper, req *types.Task) (*types.TaskInfo, error) {
+    var reqBody      *types.Common
+    var api          types.ICSApi
+    var response = types.TaskInfo{}
+
+    if req == nil || req.TaskId == "" {
+        return nil, nil
+    }
+    api.Api = fmt.Sprintf("/tasks/%s", req.TaskId)
+    api.Token = true
+
+    resp, err := r.GetTrip(ctx, api, reqBody)
+    respBody, err1 := HandleResponse(resp, err)
+    if err1 != nil {
+        err = err1
+    } else if respBody != nil {
+        jsonErr := json.Unmarshal([]byte(respBody), &response)
+        err = JsonError(jsonErr)
+    }
+
+    return &response, err
+}

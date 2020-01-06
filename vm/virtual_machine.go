@@ -8,12 +8,17 @@ import (
 
 func (v *VirtualMachineService) VM(id string) (*types.VM, error) {
     ctx := context.Background()
-    vm, err := methods.GetVMById(ctx, v.restAPITripper, id)
+    vm, err := methods.GetVMById(ctx, v.RestAPITripper, id)
     return vm, err
 }
 
 func (v *VirtualMachineService) VMPageList(req *types.VMPageReq) (*types.VMPageResponse, error) {
     ctx := context.Background()
-    vmPages, err := methods.GetVMPageList(ctx, v.restAPITripper, req)
+    vmPages, err := methods.GetVMPageList(ctx, v.RestAPITripper, req)
     return vmPages, err
+}
+func (v *VirtualMachineService) PowerOnVM(id string) (*types.Task, error) {
+    ctx := context.Background()
+    task, err := methods.PowerOnVMById(ctx, v.RestAPITripper, id)
+    return task, err
 }
