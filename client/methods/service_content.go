@@ -1,42 +1,42 @@
 package methods
 
 import (
-	"context"
-	"time"
+    "context"
+    "time"
 
-	"github.com/inspur-ics/ics-go-sdk/client/restful"
-	"github.com/inspur-ics/ics-go-sdk/client/types"
+    "github.com/inspur-ics/ics-go-sdk/client/restful"
+    "github.com/inspur-ics/ics-go-sdk/client/types"
 )
 
 var serviceInstance = types.ManagedObjectReference{
-	Type:  "ServiceInstance",
-	Value: "ServiceInstance",
+    Type:  "ServiceInstance",
+    Value: "ServiceInstance",
 }
 
 func GetServiceContent(ctx context.Context, r restful.RestAPITripper) (types.ServiceContent, error) {
-	//req := types.RetrieveServiceContent{
-	//	This: serviceInstance,
-	//}
-	//
-	//res, err := RetrieveServiceContent(ctx, r, &req)
-	//if err != nil {
-	//	return types.ServiceContent{}, err
-	//}
-	serviceContent := types.ServiceContent {}
+    //req := types.RetrieveServiceContent{
+    //    This: serviceInstance,
+    //}
+    //
+    //res, err := RetrieveServiceContent(ctx, r, &req)
+    //if err != nil {
+    //    return types.ServiceContent{}, err
+    //}
+    serviceContent := types.ServiceContent {}
 
-	return serviceContent, nil
+    return serviceContent, nil
 }
 
 func GetCurrentTime(ctx context.Context, r restful.RestAPITripper) (*time.Time, error) {
-	//req := types.CurrentTime{
-	//	This: serviceInstance,
-	//}
-	//
-	//res, err := CurrentTime(ctx, r, &req)
-	//if err != nil {
-	//	return nil, err
-	//}
-	var currentTime    time.Time
+    //req := types.CurrentTime{
+    //    This: serviceInstance,
+    //}
+    //
+    //res, err := CurrentTime(ctx, r, &req)
+    //if err != nil {
+    //    return nil, err
+    //}
+    var currentTime    time.Time
 
-	return &currentTime, nil
+    return &currentTime, nil
 }
