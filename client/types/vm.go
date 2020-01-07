@@ -145,7 +145,7 @@ type GuestOsInfo struct {
     SupportUefiBootMode    bool      `json:"supportUefiBootMode"`
 }
 
-type VM struct {
+type VirtualMachine struct {
     ID                 string        `json:"id"`
     Name               string        `json:"name"`
     State              string        `json:"state"`
@@ -232,7 +232,7 @@ type VM struct {
 
 type VMPageResponse struct {
     PageResponse
-    Items               []VM         `json:"items"`
+    Items               []VirtualMachine         `json:"items"`
 }
 
 type VMPageReq struct {

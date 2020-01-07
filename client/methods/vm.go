@@ -8,10 +8,10 @@ import (
     "github.com/inspur-ics/ics-go-sdk/client/types"
 )
 
-func GetVMById(ctx context.Context, r restful.RestAPITripper, vmId string) (*types.VM, error) {
+func GetVMById(ctx context.Context, r restful.RestAPITripper, vmId string) (*types.VirtualMachine, error) {
     var reqBody      *types.Common
     var api          types.ICSApi
-    var response = types.VM{}
+    var response = types.VirtualMachine{}
 
     if len(vmId) <= 0 {
         vmId = "anonymous"

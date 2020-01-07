@@ -6,7 +6,7 @@ import (
     "github.com/inspur-ics/ics-go-sdk/client/types"
 )
 
-func (v *VirtualMachineService) VM(id string) (*types.VM, error) {
+func (v *VirtualMachineService) VM(id string) (*types.VirtualMachine, error) {
     ctx := context.Background()
     vm, err := methods.GetVMById(ctx, v.RestAPITripper, id)
     return vm, err
