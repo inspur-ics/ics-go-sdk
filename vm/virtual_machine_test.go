@@ -11,7 +11,7 @@ func TestVM(t *testing.T) {
     icsConnection := &icsgo.ICSConnection{
         Username: "admin",
         Password: "admin@inspur",
-        Hostname: "192.168.220.164",
+        Hostname: "10.7.11.90",
         Port:     "443",
         Insecure: true,
     }
