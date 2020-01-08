@@ -221,7 +221,7 @@ type VirtualMachine struct {
     Completed          bool          `json:"completed"`
     GraphicsCardModel  string        `json:"graphicsCardModel"`
     GraphicsCardMemory int           `json:"graphicsCardMemory"`
-    VMHostName         interface{}   `json:"vmHostName"`
+    VMHostName         string   `json:"vmHostName"`
     DiskTotalSize      float64       `json:"diskTotalSize"`
     DiskUsedSize       float64       `json:"diskUsedSize"`
     DiskUsage          float64       `json:"diskUsage"`
