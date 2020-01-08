@@ -52,3 +52,27 @@ func GetDatacenterById(ctx context.Context, r restful.RestAPITripper, datacenter
 
 	return &response, err
 }
+
+
+func GetDatacenterVMById(ctx context.Context, r restful.RestAPITripper, datacenterId string) (*types.VMPageResponse, error) {
+	var reqBody      *types.Common
+	var api          types.ICSApi
+	var response = types.VMPageResponse{}
+
+	if len(datacenterId) <= 0 {
+		datacenterId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/datacenters/%s/vms",datacenterId)
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}

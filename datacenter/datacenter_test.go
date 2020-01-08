@@ -67,3 +67,45 @@ func TestGetNumberOfDatacenters(t *testing.T) {
         fmt.Println("ok!!!")
     }
 }
+
+func TestGetVMByUUID(t *testing.T) {
+    icsConnection := &icsgo.ICSConnection{
+        Username: "admin",
+        Password: "admin@inspur",
+        Hostname: "10.7.11.90",
+        Port:     "443",
+        Insecure: true,
+    }
+    ctx := context.Background()
+
+    vm, err := GetVMByUUID (ctx, icsConnection, "3f0094542ebb11eaa2691a130ac12531", "f6d6aacb-174e-4998-9714-4c504032a7d9")
+
+    if err != nil {
+        fmt.Println("func failed!!!")
+    } else {
+        fmt.Println(vm.Name)
+        fmt.Println(vm.GuestosType)
+        fmt.Println("ok!!!")
+    }
+}
+
+func TestGetVMByIP(t *testing.T) {
+    icsConnection := &icsgo.ICSConnection{
+        Username: "admin",
+        Password: "admin@inspur",
+        Hostname: "10.7.11.90",
+        Port:     "443",
+        Insecure: true,
+    }
+    ctx := context.Background()
+
+    vm, err := GetVMByIP (ctx, icsConnection, "3f0094542ebb11eaa2691a130ac12531", "10.7.11.78")
+
+    if err != nil {
+        fmt.Println("func failed!!!")
+    } else {
+        fmt.Println(vm.Name)
+        fmt.Println(vm.GuestosType)
+        fmt.Println("ok!!!")
+    }
+}
