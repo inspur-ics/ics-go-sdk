@@ -89,7 +89,7 @@ type Nic struct {
     VMID               interface{}   `json:"vmId"`
     VMStatus           interface{}   `json:"vmStatus"`
     VMTemplate         bool          `json:"vmTemplate"`
-    NetworkName        interface{}   `json:"networkName"`
+    NetworkName        string        `json:"networkName"`
     NetworkVlan        interface{}   `json:"networkVlan"`
     VlanRange          interface{}   `json:"vlanRange"`
     NetworkID          string        `json:"networkId"`
