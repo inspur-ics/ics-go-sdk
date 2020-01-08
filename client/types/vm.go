@@ -65,9 +65,9 @@ type Nic struct {
     NolocalName        string        `json:"nolocalName"`
     InnerName          interface{}   `json:"innerName"`
     DevName            string        `json:"devName"`
-    IP                 interface{}   `json:"ip"`
-    Netmask            interface{}   `json:"netmask"`
-    Gateway            interface{}   `json:"gateway"`
+    IP                 string        `json:"ip"`
+    Netmask            string        `json:"netmask"`
+    Gateway            string        `json:"gateway"`
     Mac                string        `json:"mac"`
     Model              string        `json:"model"`
     DeviceID           string        `json:"deviceId"`
