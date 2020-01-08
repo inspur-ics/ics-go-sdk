@@ -2,14 +2,14 @@ package types
 
 type Host struct {
 	ID                  string        `json:"id"`
-	IP                  interface{}   `json:"ip"`
+	IP                  string   `json:"ip"`
 	SwitchUplinkPortDto interface{}   `json:"switchUplinkPortDto"`
 	UplinkTopoDto       interface{}   `json:"uplinkTopoDto"`
 	Pnics               interface{}   `json:"pnics"`
 	Disks               interface{}   `json:"disks"`
 	Name                string        `json:"name"`
 	HostName            string        `json:"hostName"`
-	NodeVersion         interface{}   `json:"nodeVersion"`
+	NodeVersion         string        `json:"nodeVersion"`
 	Password            string        `json:"password"`
 	DataCenterID        string        `json:"dataCenterId"`
 	DataCenterName      string        `json:"dataCenterName"`
@@ -62,5 +62,12 @@ type Host struct {
 	VgpuEnable          bool          `json:"vgpuEnable"`
 	SpecialFailover     bool          `json:"specialFailover"`
 	VswitchDtos         interface{}   `json:"vswitchDtos"`
-	HotfixVersion       interface{}   `json:"hotfixVersion"`
+	HotfixVersion       string        `json:"hotfixVersion"`
+}
+
+type HostPageResponse struct {
+	TotalPage   int     `json:"totalPage"`
+	CurrentPage int     `json:"currentPage"`
+	TotalSize   int     `json:"totalSize"`
+	Items       []Host  `json:"items"`
 }

@@ -5,17 +5,17 @@ import (
     "github.com/inspur-ics/ics-go-sdk/common"
 )
 
-type DatacenterService struct {
+type HostService struct {
     common.RestAPI
 }
 
-// NewDatacenterService returns the session's datacenter service.
-func NewDatacenterService(c *client.Client) *DatacenterService {
-    dc := DatacenterService{
+// NewDatacenterService returns the session's host service.
+func NewHostService(c *client.Client) *HostService {
+    ht := HostService{
         common.RestAPI{
             RestAPITripper: c,
         },
     }
 
-    return &dc
+    return &ht
 }
