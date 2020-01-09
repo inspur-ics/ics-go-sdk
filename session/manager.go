@@ -91,3 +91,8 @@ func (sm *Manager) UserSession(ctx context.Context) (*types.UserSession, error) 
 	}
 	return sm.userSession, nil
 }
+
+func (sm *Manager) Logout(ctx context.Context) error {
+	_, err := methods.Logout(ctx, sm.client)
+	return err
+}

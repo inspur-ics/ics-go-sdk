@@ -45,13 +45,11 @@ func (c *Client) Login(ctx context.Context, u *url.Userinfo) error {
     return c.SessionManager.Login(ctx, u)
 }
 
-//// Logout dispatches to the SessionManager.
-//func (c *Client) Logout(ctx context.Context) error {
-//    // Close any idle connections after logging out.
-//    defer c.Client.CloseIdleConnections()
-//    return c.SessionManager.Logout(ctx)
-//}
-//
+// Logout dispatches to the SessionManager.
+func (c *Client) Logout(ctx context.Context) error {
+   return c.SessionManager.Logout(ctx)
+}
+
 //// PropertyCollector returns the session's default property collector.
 //func (c *Client) PropertyCollector() *property.Collector {
 //    return property.DefaultCollector(c.Client)

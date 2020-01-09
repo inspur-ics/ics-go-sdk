@@ -131,6 +131,27 @@ func Login(ctx context.Context, r restful.RestAPITripper, req *types.Login) (*ty
     return &response, err
 }
 
+func Logout(ctx context.Context, r restful.RestAPITripper) (*types.Task, error) {
+    var reqBody      *types.Common
+    var api        types.ICSApi
+
+    var response = types.Task{}
+
+    api.Api = "/logout"
+    api.Token = true
+
+    resp, err := r.GetTrip(ctx, api, reqBody)
+    respBody, err1 := HandleResponse(resp, err)
+    if err1 != nil {
+        err = err1
+    } else if respBody != nil {
+        jsonErr := json.Unmarshal([]byte(respBody), &response)
+        err = JsonError(jsonErr)
+    }
+
+    return &response, err
+}
+
 func GetTaskInfo(ctx context.Context, r restful.RestAPITripper, req *types.Task) (*types.TaskInfo, error) {
     var reqBody      *types.Common
     var api          types.ICSApi
