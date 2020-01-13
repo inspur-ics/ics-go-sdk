@@ -69,6 +69,14 @@ func (connection *ICSConnection) login(ctx context.Context, client *client.Clien
     return m.Login(ctx, url.UserPassword(connection.Username, connection.Password))
 }
 
+// Logout calls SessionManager.Logout for the given connection.
+func (connection *ICSConnection) Logout(ctx context.Context) {
+    m := session.NewManager(connection.Client)
+    if err := m.Logout(ctx); err != nil {
+        klog.Errorf("Logout failed: %s", err)
+    }
+}
+
 // NewClient creates a new ics-go-sdk client for the ICSConnection obj
 func (connection *ICSConnection) NewClient(ctx context.Context) (*client.Client, error) {
     url, err := restful.ParseURL(net.JoinHostPort(connection.Hostname, connection.Port))
@@ -119,4 +127,13 @@ func (connection *ICSConnection) GetClient() (*client.Client, error) {
         return client, nil
     }
     return client, nil
+}
+
+// UpdateCredentials updates username and password.
+// Note: Updated username and password will be used when there is no session active
+func (connection *ICSConnection) UpdateCredentials(username string, password string) {
+    connection.credentialsLock.Lock()
+    defer connection.credentialsLock.Unlock()
+    connection.Username = username
+    connection.Password = password
 }
