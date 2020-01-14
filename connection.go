@@ -70,11 +70,13 @@ func (connection *ICSConnection) login(ctx context.Context, client *client.Clien
 }
 
 // Logout calls SessionManager.Logout for the given connection.
-func (connection *ICSConnection) Logout(ctx context.Context) {
+func (connection *ICSConnection) Logout(ctx context.Context) error {
     m := session.NewManager(connection.Client)
     if err := m.Logout(ctx); err != nil {
         klog.Errorf("Logout failed: %s", err)
+        return err
     }
+    return nil
 }
 
 // NewClient creates a new ics-go-sdk client for the ICSConnection obj
