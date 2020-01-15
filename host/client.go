@@ -1,4 +1,4 @@
-package dc
+package host
 
 import (
     "github.com/inspur-ics/ics-go-sdk/client"

@@ -1,4 +1,4 @@
-package dc
+package datacenter
 
 import (
     "github.com/inspur-ics/ics-go-sdk/client"
@@ -16,6 +16,5 @@ func NewDatacenterService(c *client.Client) *DatacenterService {
             RestAPITripper: c,
         },
     }
-
     return &dc
 }
