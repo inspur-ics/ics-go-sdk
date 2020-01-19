@@ -10,16 +10,15 @@ import (
 	"github.com/inspur-ics/ics-go-sdk/client/types"
 )
 
-
 func GetHostById(ctx context.Context, r restful.RestAPITripper, hostUUID string) (*types.Host, error) {
-	var reqBody      *types.Common
-	var api          types.ICSApi
+	var reqBody *types.Common
+	var api types.ICSApi
 	var response = types.Host{}
 
 	if len(hostUUID) <= 0 {
 		hostUUID = "anonymous"
 	}
-	api.Api = fmt.Sprintf("/hosts/%s",hostUUID)
+	api.Api = fmt.Sprintf("/hosts/%s", hostUUID)
 	api.Token = true
 
 	resp, err := r.GetTrip(ctx, api, reqBody)
@@ -32,4 +31,27 @@ func GetHostById(ctx context.Context, r restful.RestAPITripper, hostUUID string)
 	}
 
 	return &response, err
+}
+
+func GetHostAvailStorages(ctx context.Context, r restful.RestAPITripper, hostUUID string) ([]types.Datastore, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response []types.Datastore
+
+	if len(hostUUID) <= 0 {
+		hostUUID = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/hosts/%s/availstorages", hostUUID)
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
 }

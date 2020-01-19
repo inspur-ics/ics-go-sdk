@@ -1,23 +1,23 @@
 package datacenter
 
 import (
-    "context"
-    "github.com/inspur-ics/ics-go-sdk/client/methods"
-    "github.com/inspur-ics/ics-go-sdk/client/types"
+	"context"
+	"github.com/inspur-ics/ics-go-sdk/client/methods"
+	"github.com/inspur-ics/ics-go-sdk/client/types"
 )
 
-func  (d *DatacenterService) GetDatacenter(ctx context.Context, datacenterid string) (*types.Datacenter, error) {
-   dc, err := methods.GetDatacenterById(ctx, d.RestAPITripper, datacenterid)
-   return dc, err
+func (d *DatacenterService) GetDatacenter(ctx context.Context, datacenterid string) (*types.Datacenter, error) {
+	dc, err := methods.GetDatacenterById(ctx, d.RestAPITripper, datacenterid)
+	return dc, err
 }
 
 func (d *DatacenterService) GetAllDatacenters(ctx context.Context) ([]*types.Datacenter, error) {
-   var dclist []*types.Datacenter
-   datacenters, err := methods.GetAllDatacenterList(ctx, d.RestAPITripper)
-   for k, _ := range datacenters.Items {
-       dclist = append(dclist, &datacenters.Items[k])
-   }
-   return dclist, err
+	var dclist []*types.Datacenter
+	datacenters, err := methods.GetAllDatacenterList(ctx, d.RestAPITripper)
+	for idx := range datacenters.Items {
+		dclist = append(dclist, &datacenters.Items[idx])
+	}
+	return dclist, err
 }
 
 //func  (d *DatacenterService) GetDatacenterSv(datacenterid string) (*types.Datacenter, error) {
@@ -41,21 +41,19 @@ func (d *DatacenterService) GetAllDatacenters(ctx context.Context) ([]*types.Dat
 //    return dclist, err
 //}
 //
-//func (d *DatacenterService) GetDatacenterVMSv(datacenterid string) ([]types.VirtualMachine, error) {
-//
-//    //    var datacenterlist types.DatacenterPageResponse
-////    var vmlist []*types.VirtualMachine
-//
-//    ctx := context.Background()
-//    dcvms, err := methods.GetDatacenterVMById(ctx, d.RestAPITripper, datacenterid)
-//
-////    for _, vm := range dcvms.Items {
-////        vmlist = append(vmlist, &vm)
-////    }
-//
-//    return dcvms.Items, err
-//}
-//
+
+func (d *DatacenterService) GetDatacenterVMList(ctx context.Context, datacenterid string) ([]*types.VirtualMachine, error) {
+
+	var vmlist []*types.VirtualMachine
+	dcvms, err := methods.GetDatacenterVMById(ctx, d.RestAPITripper, datacenterid)
+
+	for idx := range dcvms.Items {
+		vmlist = append(vmlist, &dcvms.Items[idx])
+	}
+
+	return vmlist, err
+}
+
 //func  GetAllDatacenter (dctx context.Context, connection *icsgo.ICSConnection) ([]*types.Datacenter, error){
 //    ctx := context.Background()
 //    err := connection.Connect(ctx)
