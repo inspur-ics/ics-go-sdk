@@ -2,6 +2,7 @@ package restful
 
 import (
     "encoding/json"
+    "fmt"
 
     "context"
     "crypto/tls"
@@ -142,14 +143,14 @@ func (c *Client) GetTrip(ctx context.Context, api types.ICSApi, req interface{})
         return &errorParam, err
     }
 
-    var getReq map[string]string
+    var getReq map[string]interface{}
     err = json.Unmarshal([]byte(reqBody), &getReq)
     if err != nil {
         return &errorParam, err
     }
 
     resp, err := c.generateRequest(api).
-        SetQueryParams(getReq).
+        SetQueryParams(formatReqParams(getReq)).
         Get(apiPath)
 
     response := Response{
@@ -157,6 +158,15 @@ func (c *Client) GetTrip(ctx context.Context, api types.ICSApi, req interface{})
         resp.Body(),
     }
     return &response, err
+}
+
+func formatReqParams(reqbody map[string]interface{}) map[string]string {
+    formatParams := make(map[string]string)
+    for key, value := range reqbody {
+        strValue := fmt.Sprintf("%v", value)
+        formatParams[key] = strValue
+    }
+    return formatParams
 }
 
 func (c *Client) PostTrip(ctx context.Context, api types.ICSApi, req interface{}) (*Response, error) {

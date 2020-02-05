@@ -4,7 +4,8 @@ import (
    "context"
    "fmt"
    icsgo "github.com/inspur-ics/ics-go-sdk"
-   "testing"
+    "github.com/inspur-ics/ics-go-sdk/client/types"
+    "testing"
 )
 
 func TestVM(t *testing.T) {
@@ -35,4 +36,36 @@ func TestVM(t *testing.T) {
    } else {
        fmt.Println("No VM be found by you point id.")
    }
+}
+
+func TestVMPageList(t *testing.T) {
+    icsConnection := &icsgo.ICSConnection{
+        Username: "admin",
+        Password: "admin@inspur",
+        Hostname: "10.7.11.90",
+        Port:     "443",
+        Insecure: true,
+    }
+    ctx := context.Background()
+    err := icsConnection.Connect(ctx)
+    if err != nil {
+        t.Fatal("Create ics connection error!")
+    }
+
+    vmClient := NewVirtualMachineService(icsConnection.Client)
+
+    pakg := types.PageReq{
+        1000,
+        1,
+        "",
+        "desc",
+    }
+
+    req := &types.VMPageReq{
+        pakg,
+    }
+    vmpagelist, err := vmClient.VMPageList(req)
+    if vmpagelist != nil {
+        fmt.Println(vmpagelist.TotalSize)
+    }
 }
