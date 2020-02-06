@@ -23,13 +23,6 @@ func TestVM(t *testing.T) {
    }
 
    vmClient := NewVirtualMachineService(icsConnection.Client)
-    pakg := types.PageReq{
-        1000,
-        1,
-        "",
-        "desc",
-    }
-
    vm, err := vmClient.GetVM(ctx,"8a878bda6f7012c7016f7de1935d047a")
    if vm != nil {
        fmt.Println(vm.Name)
