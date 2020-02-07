@@ -21,16 +21,16 @@ func (h *HostService) GetHostListByDC(ctx context.Context, datacenterPath string
 	return hostList, nil
 }
 
-//func (h *HostService) GetHostAvailStorages(ctx context.Context, hostUUID string) ([]*types.Datastore, error) {
-//	var storageList []*types.Datastore
-//	storages, err := methods.GetHostAvailStorages(ctx, h.RestAPITripper, hostUUID)
-//
-//	for idx := range storages {
-//		storageList = append(storageList, &storages[idx])
-//	}
-//
-//	return storageList, err
-//}
+func (h *HostService) GetHostAvailStorages(ctx context.Context, hostUUID string) ([]*types.Storage, error) {
+	var storageList []*types.Storage
+	storages, err := methods.GetHostAvailStorages(ctx, h.RestAPITripper, hostUUID)
+
+	for idx := range storages {
+		storageList = append(storageList, &storages[idx])
+	}
+
+	return storageList, err
+}
 
 //func  GetHost (hctx context.Context, connection *icsgo.ICSConnection, hostUUID string) (*types.Host, error){
 //    ctx := context.Background()
