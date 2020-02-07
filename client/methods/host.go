@@ -55,3 +55,41 @@ func GetHostAvailStorages(ctx context.Context, r restful.RestAPITripper, hostUUI
 
 	return response, err
 }
+func GetHostList(ctx context.Context, r restful.RestAPITripper) (types.HostPageResponse, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response types.HostPageResponse
+
+	api.Api = "/hosts/"
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}
+func GetHostAccessibleDatastoreList(ctx context.Context, r restful.RestAPITripper,hostId string) ([]types.Storage, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response []types.Storage
+
+	api.Api = fmt.Sprintf("hosts/%s/availstorages", hostId)
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}
