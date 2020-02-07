@@ -38,6 +38,54 @@ func TestVM(t *testing.T) {
    }
 }
 
+func TestGetVMByIP(t *testing.T) {
+    icsConnection := &icsgo.ICSConnection{
+        Username: "admin",
+        Password: "admin@inspur",
+        Hostname: "10.7.11.90",
+        Port:     "443",
+        Insecure: true,
+    }
+    ctx := context.Background()
+    err := icsConnection.Connect(ctx)
+    if err != nil {
+        t.Fatal("Create ics connection error!")
+    }
+
+    vmClient := NewVirtualMachineService(icsConnection.Client)
+
+    vm, err := vmClient.GetVMByIP(ctx,"10.7.11.81")
+    if vm != nil {
+        fmt.Printf("%+v", vm)
+    } else {
+        fmt.Println("No VM be found by you point id.")
+    }
+}
+
+func TestGetVMByName(t *testing.T) {
+    icsConnection := &icsgo.ICSConnection{
+        Username: "admin",
+        Password: "admin@inspur",
+        Hostname: "10.7.11.90",
+        Port:     "443",
+        Insecure: true,
+    }
+    ctx := context.Background()
+    err := icsConnection.Connect(ctx)
+    if err != nil {
+        t.Fatal("Create ics connection error!")
+    }
+
+    vmClient := NewVirtualMachineService(icsConnection.Client)
+
+    vm, err := vmClient.GetVMByName(ctx,"master")
+    if vm != nil {
+        fmt.Printf("%+v", vm)
+    } else {
+        fmt.Println("No VM be found by you point id.")
+    }
+}
+
 func TestVMPageList(t *testing.T) {
     icsConnection := &icsgo.ICSConnection{
         Username: "admin",
@@ -66,6 +114,6 @@ func TestVMPageList(t *testing.T) {
     }
     vmpagelist, err := vmClient.VMPageList(req)
     if vmpagelist != nil {
-        fmt.Println(vmpagelist.TotalSize)
+        fmt.Printf("%+v", vmpagelist)
     }
 }

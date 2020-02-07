@@ -17,15 +17,13 @@ func (v *VirtualMachineService) GetVMByUUID(ctx context.Context, vmUUID string) 
     return vm, err
 }
 
-//FIXME TODO.WANGYONGCHAO
 func (v *VirtualMachineService) GetVMByIP(ctx context.Context, ipAddy string) (*types.VirtualMachine, error) {
-    vm, err := methods.GetVMById(ctx, v.RestAPITripper, ipAddy)
+    vm, err := methods.GetVMByIP(ctx, v.RestAPITripper, ipAddy)
     return vm, err
 }
 
-//FIXME TODO.WANGYONGCHAO
 func (v *VirtualMachineService) GetVMByName(ctx context.Context, name string) (*types.VirtualMachine, error) {
-    vm, err := methods.GetVMById(ctx, v.RestAPITripper, name)
+    vm, err := methods.GetVMByName(ctx, v.RestAPITripper, name)
     return vm, err
 }
 
