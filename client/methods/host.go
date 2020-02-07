@@ -33,10 +33,10 @@ func GetHostById(ctx context.Context, r restful.RestAPITripper, hostUUID string)
 	return &response, err
 }
 
-func GetHostAvailStorages(ctx context.Context, r restful.RestAPITripper, hostUUID string) ([]types.Datastore, error) {
+func GetHostAvailStorages(ctx context.Context, r restful.RestAPITripper, hostUUID string) ([]types.Storage, error) {
 	var reqBody *types.Common
 	var api types.ICSApi
-	var response []types.Datastore
+	var response []types.Storage
 
 	if len(hostUUID) <= 0 {
 		hostUUID = "anonymous"
