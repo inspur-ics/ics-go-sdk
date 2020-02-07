@@ -37,6 +37,30 @@ func TestVM(t *testing.T) {
    }
 }
 
+func TestGetVMByUUID(t *testing.T) {
+    icsConnection := &icsgo.ICSConnection{
+        Username: "admin",
+        Password: "admin@inspur",
+        Hostname: "10.7.11.90",
+        Port:     "443",
+        Insecure: true,
+    }
+    ctx := context.Background()
+    err := icsConnection.Connect(ctx)
+    if err != nil {
+        t.Fatal("Create ics connection error!")
+    }
+
+    vmClient := NewVirtualMachineService(icsConnection.Client)
+
+    vm, err := vmClient.GetVMByUUID(ctx,"6c535536-6fe0-46ee-a20f-772dc0cd61ff")
+    if vm != nil {
+        fmt.Printf("%+v", vm)
+    } else {
+        fmt.Println("No VM be found by you point id.")
+    }
+}
+
 func TestGetVMByIP(t *testing.T) {
     icsConnection := &icsgo.ICSConnection{
         Username: "admin",
