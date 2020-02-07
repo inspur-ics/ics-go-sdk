@@ -44,3 +44,11 @@ func (h *HostService) GetHostAvailStorages(ctx context.Context, hostUUID string)
 //
 //    return host, err
 //}
+func (hostserver *HostService)GetHostList(ctx context.Context) ([]types.Host, error) {
+	hostlist, err := methods.GetHostList(ctx, hostserver.RestAPITripper)
+	return hostlist.Items, err
+}
+func (hostserver *HostService)GetHostAccessibleDatastoreList(ctx context.Context,hostid string) ([]types.Storage, error) {
+	storagelist, err := methods.GetHostAccessibleDatastoreList(ctx, hostserver.RestAPITripper,hostid)
+	return storagelist, err
+}
