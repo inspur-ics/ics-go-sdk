@@ -149,7 +149,7 @@ func (c *Client) GetTrip(ctx context.Context, api types.ICSApi, req interface{})
     if err != nil {
         return &errorParam, err
     }
-    klog.V(5).Infof("Get Request API path:%s, parameters:%+v", apiPath, getReq)
+    klog.V(10).Infof("Get Request API path:%s, parameters:%+v", apiPath, getReq)
 
     resp, err := c.generateRequest(api).
         SetQueryParams(formatReqParams(getReq)).
@@ -159,7 +159,7 @@ func (c *Client) GetTrip(ctx context.Context, api types.ICSApi, req interface{})
         resp.RawResponse,
         resp.Body(),
     }
-    klog.V(5).Infof("Get Request API path:%s, Response:%+v", apiPath, response)
+    klog.V(10).Infof("Get Request API path:%s, Response:%+v", apiPath, response)
     return &response, err
 }
 
@@ -181,7 +181,7 @@ func (c *Client) PostTrip(ctx context.Context, api types.ICSApi, req interface{}
     if err != nil {
         return &errorParam, err
     }
-    klog.V(5).Infof("Post Request API path:%s, body:%+v", apiPath, reqBody)
+    klog.V(10).Infof("Post Request API path:%s, body:%+v", apiPath, reqBody)
 
     // POST JSON string
     resp, err := c.generateRequest(api).
@@ -192,7 +192,7 @@ func (c *Client) PostTrip(ctx context.Context, api types.ICSApi, req interface{}
         resp.RawResponse,
         resp.Body(),
     }
-    klog.V(5).Infof("Post Request API path:%s, Response:%+v", apiPath, response)
+    klog.V(10).Infof("Post Request API path:%s, Response:%+v", apiPath, response)
     return &response, err
 }
 
@@ -206,7 +206,7 @@ func (c *Client) PutTrip(ctx context.Context, api types.ICSApi, req interface{})
         return &errorParam, err
     }
 
-    klog.V(5).Infof("Put Request API path:%s, body:%+v", apiPath, reqBody)
+    klog.V(10).Infof("Put Request API path:%s, body:%+v", apiPath, reqBody)
 
     // Just one sample of PUT, refer POST for more combination
     resp, err := c.generateRequest(api).
@@ -218,7 +218,7 @@ func (c *Client) PutTrip(ctx context.Context, api types.ICSApi, req interface{})
         resp.RawResponse,
         resp.Body(),
     }
-    klog.V(5).Infof("Put Request API path:%s, Response:%+v", apiPath, response)
+    klog.V(10).Infof("Put Request API path:%s, Response:%+v", apiPath, response)
     return &response, err
 }
 
@@ -232,7 +232,7 @@ func (c *Client) DeleteTrip(ctx context.Context, api types.ICSApi, req interface
         return &errorParam, err
     }
 
-    klog.V(5).Infof("Delete Request API path:%s, body:%+v", apiPath, reqBody)
+    klog.V(10).Infof("Delete Request API path:%s, body:%+v", apiPath, reqBody)
 
     // DELETE a articles with payload/body as a JSON string
     resp, err := c.generateRequest(api).
@@ -244,6 +244,6 @@ func (c *Client) DeleteTrip(ctx context.Context, api types.ICSApi, req interface
         resp.RawResponse,
         resp.Body(),
     }
-    klog.V(5).Infof("Delete Request API path:%s, Response:%+v", apiPath, response)
+    klog.V(10).Infof("Delete Request API path:%s, Response:%+v", apiPath, response)
     return &response, err
 }
