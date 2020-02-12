@@ -22,7 +22,6 @@ func (v *VirtualMachineService) VMPageList(req *types.VMPageReq) (*types.VMPageR
     return vmPages, err
 }
 
-//FIXME TODO.WANGYONGCHAO
 func (v *VirtualMachineService) GetVMByUUID(ctx context.Context, vmUUID string) (*types.VirtualMachine, error) {
     vms, err := v.GetVMList(ctx)
     for _, vm := range vms {

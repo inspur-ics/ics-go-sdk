@@ -2,19 +2,26 @@ package tag
 
 import (
     "context"
+    "github.com/inspur-ics/ics-go-sdk/client/methods"
 
     "github.com/inspur-ics/ics-go-sdk/client/types"
 )
 
-//FIXME TODO.WANGYONGCHAO
 // ListAttachedTags fetches the array of tag IDs attached to the given object.
 func (t *TagsService) ListAttachedTags(ctx context.Context, targetType string, ref string) ([]string, error) {
-    var res []string
-    return res, nil
+    tags := make([]string, 0)
+    treeItems, err := methods.ListAttachedTags(ctx, t.RestAPITripper, targetType, ref)
+    if err == nil && len(treeItems) == 1 {
+        for _, v := range treeItems[0].Children {
+            if v.Checked {
+                tags = append(tags, v.ID)
+            }
+        }
+    }
+    return tags, err
 }
 
-//FIXME TODO.WANGYONGCHAO
-func (c *TagsService) GetTag(ctx context.Context, id string) (*types.Tag, error) {
-    var res types.Tag
-    return &res, nil
+func (t *TagsService) GetTag(ctx context.Context, id string) (*types.Tag, error) {
+    tag, err := methods.GetTagById(ctx, t.RestAPITripper, id)
+    return tag, err
 }

@@ -1,7 +1,8 @@
 package types
 
 type Tag struct {
-    Name        string        `json:"tagName"`
+    ID             string        `json:"id"`
+    Name           string        `json:"tagName"`
     Description    string        `json:"description"`
 }
 

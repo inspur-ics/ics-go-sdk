@@ -27,6 +27,15 @@ type PageResponse struct {
     Items               []interface{}     `json:"items"`
 }
 
+type TreeItem struct {
+    ID         string     `json:"id"`
+    Text       string     `json:"text"`
+    IconCls    string     `json:"iconCls"`
+    Checked    bool       `json:"checked"`
+    ViewID     string     `json:"viewId"`
+    Children   []TreeItem `json:"children"`
+}
+
 type ICSApi struct {
     Api    string        `json:"api"`
     Token  bool          `json:"token"`
