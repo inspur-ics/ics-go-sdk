@@ -74,6 +74,27 @@ func GetHostList(ctx context.Context, r restful.RestAPITripper) (types.HostPageR
 
 	return response, err
 }
+
+func GetHostListByDC(ctx context.Context, r restful.RestAPITripper, datacenterPath string) (*types.HostPageResponse, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response types.HostPageResponse
+
+	api.Api =  fmt.Sprintf("/datacenters/%s/hosts", datacenterPath)
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
 func GetHostAccessibleDatastoreList(ctx context.Context, r restful.RestAPITripper,hostId string) ([]types.Storage, error) {
 	var reqBody *types.Common
 	var api types.ICSApi

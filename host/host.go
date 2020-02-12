@@ -13,12 +13,14 @@ func (h *HostService) GetHost(ctx context.Context, hostUUID string) (*types.Host
 }
 
 func (h *HostService) GetHostListByDC(ctx context.Context, datacenterPath string) ([]*types.Host, error) {
-	var hostList []*types.Host
-	//hosts, err := methods.GetAllDatacenterList(ctx, h.RestAPITripper)
-	//for _, host := range hosts.Items {
-	//    hostList = append(hostList, &host)
-	//}
-	return hostList, nil
+	var hostslist []*types.Host
+	hosts, err := methods.GetHostListByDC(ctx, h.RestAPITripper, datacenterPath)
+	if err == nil && len(hosts.Items) > 0 {
+		for index := range hosts.Items {
+			hostslist = append(hostslist, &hosts.Items[index])
+		}
+	}
+	return hostslist, err
 }
 
 func (h *HostService) GetHostAvailStorages(ctx context.Context, hostUUID string) ([]*types.Storage, error) {
@@ -32,23 +34,11 @@ func (h *HostService) GetHostAvailStorages(ctx context.Context, hostUUID string)
 	return storageList, err
 }
 
-//func  GetHost (hctx context.Context, connection *icsgo.ICSConnection, hostUUID string) (*types.Host, error){
-//    ctx := context.Background()
-//    err := connection.Connect(ctx)
-//    if err != nil {
-//        fmt.Println("Create ics connection error!")
-//    }
-//
-//    Client := NewHostService(connection.Client)
-//    host, err := Client.GetHostSv(hostUUID)
-//
-//    return host, err
-//}
-func (hostserver *HostService)GetHostList(ctx context.Context) ([]types.Host, error) {
+func (hostserver *HostService) GetHostList(ctx context.Context) ([]types.Host, error) {
 	hostlist, err := methods.GetHostList(ctx, hostserver.RestAPITripper)
 	return hostlist.Items, err
 }
-func (hostserver *HostService)GetHostAccessibleDatastoreList(ctx context.Context,hostid string) ([]types.Storage, error) {
+func (hostserver *HostService) GetHostAccessibleDatastoreList(ctx context.Context, hostid string) ([]types.Storage, error) {
 	storagelist, err := methods.GetHostAccessibleDatastoreList(ctx, hostserver.RestAPITripper,hostid)
 	return storagelist, err
 }

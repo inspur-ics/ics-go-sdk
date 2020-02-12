@@ -54,3 +54,26 @@ func TestGetHostAccessibleDatastoreList(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 }
+
+func TestGetHostListByDC(t *testing.T) {
+	icsConnection = icsgo.ICSConnection{
+		Username: "admin",
+		Password: "admin@inspur",
+		Hostname: "10.7.11.90",
+		Port:     "443",
+		Insecure: true,
+	}
+	ctx = context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	hostClient = NewHostService(icsConnection.Client)
+	hostlist, err := hostClient.GetHostListByDC(ctx, "3f0094542ebb11eaa2691a130ac12531")
+	if hostlist != nil && len(hostlist) >= 1{
+		fmt.Printf("%+v", hostlist[0])
+	} else if err != nil {
+		fmt.Println(err.Error())
+	}
+}
