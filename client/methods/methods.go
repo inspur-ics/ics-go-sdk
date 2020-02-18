@@ -4,6 +4,7 @@ import (
     "context"
     "encoding/json"
     "fmt"
+    "strconv"
     "github.com/inspur-ics/ics-go-sdk/client/restful"
     "github.com/inspur-ics/ics-go-sdk/client/types"
 )
@@ -43,21 +44,22 @@ func HandleResponse(resp *restful.Response, errHttp error) ([]byte, error) {
     if resp.StatusCode() == 200 {
         response = resp.Body()
     } else if resp.StatusCode() == 202 || resp.StatusCode() == 401 || resp.StatusCode() == 403 {
-        e := types.SDKError{}
-        err := json.Unmarshal([]byte(resp.Body()), &e)
+        var e interface{}
+        err = json.Unmarshal([]byte(resp.Body()), &e)
         if err != nil {
             code = "501"
-            msg = "Service response error"
-            err = &types.SDKError{
-                Code: code,
-                Message: msg,
-            }
+            msg = fmt.Sprintf("Service response error: %+v", err)
         } else {
-            err = &e
+            code = strconv.Itoa(resp.StatusCode())
+            msg = fmt.Sprintf("Service response error: %+v", e)
+        }
+        err = &types.SDKError{
+            Code: code,
+            Message: msg,
         }
     } else {
         code = "500"
-        msg = "Service unknown error"
+        msg = fmt.Sprintf("Service unknown error. StatusCode:%d", resp.StatusCode())
         err = &types.SDKError{
             Code: code,
             Message: msg,
