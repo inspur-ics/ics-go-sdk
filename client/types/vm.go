@@ -91,6 +91,12 @@ type Nic struct {
 	DhcpIP          interface{} `json:"dhcpIp"`
 }
 
+type Floppy struct {
+	Path      string      `json:"path"`
+	DataStore interface{} `json:"dataStore"`
+	VfdType   string      `json:"vfdType"`
+}
+
 type Cdrom struct {
 	Path           string      `json:"path"`
 	Type           string      `json:"type"`
@@ -98,6 +104,11 @@ type Cdrom struct {
 	StartConnected bool        `json:"startConnected"`
 	CifsDto        interface{} `json:"cifsDto"`
 	DataStore      interface{} `json:"dataStore"`
+}
+
+type GuestOSAuthInfo struct {
+	UserName string `json:"userName"`
+	UserPwd  string `json:"userPwd"`
 }
 
 type GuestOsInfo struct {
