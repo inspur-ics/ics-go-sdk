@@ -37,8 +37,8 @@ func (v *VirtualMachineService) GetVMByUUID(ctx context.Context, vmUUID string) 
 	return nil, err
 }
 
-func (v *VirtualMachineService) GetVMByIP(ctx context.Context, ipAddy string) (*types.VirtualMachine, error) {
-	vm, err := methods.GetVMByIP(ctx, v.RestAPITripper, ipAddy)
+func (v *VirtualMachineService) GetVMByIP(ctx context.Context, ip string) (*types.VirtualMachine, error) {
+	vm, err := methods.GetVMByIP(ctx, v.RestAPITripper, ip)
 	return vm, err
 }
 
@@ -56,4 +56,34 @@ func (v *VirtualMachineService) PowerOnVM(id string) (*types.Task, error) {
 	ctx := context.Background()
 	task, err := methods.PowerOnVMById(ctx, v.RestAPITripper, id)
 	return task, err
+}
+
+func (v *VirtualMachineService) GetVMTemplateList(ctx context.Context) ([]types.VirtualMachine, error) {
+	vmTemplateList, err := methods.GetVMTemplateList(ctx, v.RestAPITripper)
+	return vmTemplateList.Items, err
+}
+
+func (v *VirtualMachineService) GetVMTemplate(ctx context.Context, id string) (*types.VirtualMachine, error) {
+	vmt, err := methods.GetVMTemplateById(ctx, v.RestAPITripper, id)
+	return vmt, err
+}
+
+func (v *VirtualMachineService) GetVMTemplateByUUID(ctx context.Context, uuid string) (*types.VirtualMachine, error) {
+	vmtList, err := v.GetVMTemplateList(ctx)
+	for _, vmt := range vmtList {
+		if uuid == vmt.UUID {
+			return &vmt, err
+		}
+	}
+	return nil, err
+}
+
+func (v *VirtualMachineService) GetVMTemplateByName(ctx context.Context, name string) (*types.VirtualMachine, error) {
+	vmtList, err := v.GetVMTemplateList(ctx)
+	for _, vmt := range vmtList {
+		if name == vmt.Name {
+			return &vmt, err
+		}
+	}
+	return nil, err
 }
