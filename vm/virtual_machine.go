@@ -52,9 +52,13 @@ func (v *VirtualMachineService) GetVMByPath(ctx context.Context, path string) (*
 	return vm, err
 }
 
-func (v *VirtualMachineService) PowerOnVM(id string) (*types.Task, error) {
-	ctx := context.Background()
+func (v *VirtualMachineService) PowerOnVM(ctx context.Context, id string) (*types.Task, error) {
 	task, err := methods.PowerOnVMById(ctx, v.RestAPITripper, id)
+	return task, err
+}
+
+func (v *VirtualMachineService) CreateVMByTemplate(ctx context.Context, vmSpec types.VirtualMachine) (*types.Task, error) {
+	task, err := methods.CreateVMByTemplate(ctx, v.RestAPITripper, vmSpec)
 	return task, err
 }
 

@@ -2,6 +2,7 @@ package vm
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	icsgo "github.com/inspur-ics/ics-go-sdk"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
@@ -145,7 +146,8 @@ func TestGetVMTemplate(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to get vm template by id. Error: %v", err)
 	} else {
-		t.Logf("VMTemplate: %+v", vmt)
+		vmtJson, _ := json.MarshalIndent(vmt, "", "\t")
+		t.Logf("VMTemplate: %v", string(vmtJson))
 	}
 }
 
@@ -162,7 +164,8 @@ func TestGetVMTemplateByUUID(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to get vm template by uuid. Error: %v", err)
 	} else {
-		t.Logf("VMTemplate: %+v", vmt)
+		vmtJson, _ := json.MarshalIndent(vmt, "", "\t")
+		t.Logf("VMTemplate: %v", string(vmtJson))
 	}
 }
 
@@ -179,6 +182,33 @@ func TestGetVMTemplateByName(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to get vm template by name. Error: %v", err)
 	} else {
-		t.Logf("VMTemplate: %+v", vmt)
+		vmtJson, _ := json.MarshalIndent(vmt, "", "\t")
+		t.Logf("VMTemplate: %v", string(vmtJson))
+	}
+}
+
+func TestCreateVMByTemplate(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmtName := "template_test"
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	vmt, err := vmClient.GetVMTemplateByName(ctx, vmtName)
+	if err != nil {
+		t.Fatalf("Failed to get vm template by name. Error: %v", err)
+	} else {
+		vmtJson, _ := json.MarshalIndent(vmt, "", "\t")
+		t.Logf("VMTemplate: %v", string(vmtJson))
+	}
+
+	vmt.Name = "vm_create_by_template_001"
+	task, err := vmClient.CreateVMByTemplate(ctx, *vmt)
+	if err != nil {
+		t.Fatalf("Failed to create vm by template. Error: %v", err)
+	} else {
+		t.Logf("TaskInfo: %+v", task)
 	}
 }

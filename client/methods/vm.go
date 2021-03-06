@@ -165,3 +165,65 @@ func SetVM(ctx context.Context, r restful.RestAPITripper, vmInfo types.VirtualMa
 
 	return &response, err
 }
+
+func CreateVMByTemplate(ctx context.Context, r restful.RestAPITripper, vmSpec types.VirtualMachine) (*types.Task, error) {
+	var api types.ICSApi
+	var response = types.Task{}
+
+	api.Api = fmt.Sprintf("/vms?action=createByTemplate")
+	api.Token = true
+
+	resp, err := r.PostTrip(ctx, api, vmSpec)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+func GetVMTemplateList(ctx context.Context, r restful.RestAPITripper) (*types.VMPageResponse, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.VMPageResponse{}
+
+	api.Api = "/vmtemplates"
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+func GetVMTemplateById(ctx context.Context, r restful.RestAPITripper, vmtId string) (*types.VirtualMachine, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.VirtualMachine{}
+
+	if len(vmtId) <= 0 {
+		vmtId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/vmtemplates/%s", vmtId)
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
