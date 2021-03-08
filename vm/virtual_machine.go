@@ -57,8 +57,8 @@ func (v *VirtualMachineService) PowerOnVM(ctx context.Context, id string) (*type
 	return task, err
 }
 
-func (v *VirtualMachineService) CreateVMByTemplate(ctx context.Context, vmSpec types.VirtualMachine) (*types.Task, error) {
-	task, err := methods.CreateVMByTemplate(ctx, v.RestAPITripper, vmSpec)
+func (v *VirtualMachineService) CreateVMByTemplate(ctx context.Context, vmSpec types.VirtualMachine, quickClone bool) (*types.Task, error) {
+	task, err := methods.CreateVMByTemplate(ctx, v.RestAPITripper, vmSpec, quickClone)
 	return task, err
 }
 

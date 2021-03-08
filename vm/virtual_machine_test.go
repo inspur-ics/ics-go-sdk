@@ -201,14 +201,25 @@ func TestCreateVMByTemplate(t *testing.T) {
 		t.Fatalf("Failed to get vm template by name. Error: %v", err)
 	} else {
 		vmtJson, _ := json.MarshalIndent(vmt, "", "\t")
-		t.Logf("VMTemplate: %v", string(vmtJson))
+		fmt.Printf("VMTemplate: %v\n", string(vmtJson))
 	}
 
+	quickClone := false
 	vmt.Name = "vm_create_by_template_001"
-	task, err := vmClient.CreateVMByTemplate(ctx, *vmt)
+	task, err := vmClient.CreateVMByTemplate(ctx, *vmt, quickClone)
 	if err != nil {
 		t.Fatalf("Failed to create vm by template. Error: %v", err)
 	} else {
-		t.Logf("TaskInfo: %+v", task)
+		fmt.Printf("Clone VM Task: %+v\n", task)
 	}
+
+	fmt.Printf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		fmt.Printf("Task Status: %v\n", string(taskJson))
+	}
+
 }

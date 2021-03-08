@@ -166,11 +166,11 @@ func SetVM(ctx context.Context, r restful.RestAPITripper, vmInfo types.VirtualMa
 	return &response, err
 }
 
-func CreateVMByTemplate(ctx context.Context, r restful.RestAPITripper, vmSpec types.VirtualMachine) (*types.Task, error) {
+func CreateVMByTemplate(ctx context.Context, r restful.RestAPITripper, vmSpec types.VirtualMachine, quickClone bool) (*types.Task, error) {
 	var api types.ICSApi
 	var response = types.Task{}
 
-	api.Api = fmt.Sprintf("/vms?action=createByTemplate")
+	api.Api = fmt.Sprintf("/vms?action=createByTemplate&quickClone=%t", quickClone)
 	api.Token = true
 
 	resp, err := r.PostTrip(ctx, api, vmSpec)
