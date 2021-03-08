@@ -1,0 +1,21 @@
+{
+	"comment": "",
+	"ignore": "",
+	"package": [
+		{
+			"checksumSHA1": "FOYQdk5kElOR70HSc8Nll9p4TPM=",
+			"path": "github.com/go-logr/logr",
+			"revision": "8fc6c73f3911f11de3d0c18ade9880f1114ae72f",
+			"revisionTime": "2021-01-23T00:09:52Z"
+		},
+		{
+			"checksumSHA1": "jf+GkQQTP48ne+scZndVG1lc6Lw=",
+			"path": "k8s.io/klog",
+			"revision": "2ca9ad30301bf30a8a6e0fa2110db6b8df699a91",
+			"revisionTime": "2019-09-19T12:41:00Z",
+			"version": "v1.0.0",
+			"versionExact": "v1.0.0"
+		}
+	],
+	"rootPath": "github.com/inspur-ics/ics-go-sdk"
+}
