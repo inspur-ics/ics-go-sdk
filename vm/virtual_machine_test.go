@@ -19,7 +19,7 @@ var (
 	}
 )
 
-func TestVM(t *testing.T) {
+func TestGetVM(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
@@ -27,17 +27,44 @@ func TestVM(t *testing.T) {
 	}
 
 	vmClient := NewVirtualMachineService(icsConnection.Client)
-	vm, err := vmClient.GetVM(ctx, "8a878bda6f7012c7016f7de1935d047a")
-	if vm != nil {
-		fmt.Println(vm.Name)
-		fmt.Println(vm.ID)
-		fmt.Println(vm.UUID)
-		fmt.Println(vm.HostID)
-		fmt.Println(vm.HostIP)
-		fmt.Println(vm.Status)
-		fmt.Println(vm.State)
+	vm, err := vmClient.GetVM(ctx, "8ab0b28d77be994a017819e3f65f1169")
+	if err != nil {
+		t.Errorf("Failed to get vm info by specified id. Error: %v", err)
 	} else {
-		fmt.Println("No VM be found by you point id.")
+		vmJson, _ := json.MarshalIndent(vm, "", "\t")
+		t.Logf("VM Info: %s\n", string(vmJson))
+	}
+}
+
+func TestSetVM(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	vm, err := vmClient.GetVM(ctx, "8ab0b28d77be994a017819e3f65f1169")
+	if err != nil {
+		t.Fatalf("Failed to get vm info by specified id. Error: %v", err)
+	}
+
+	vm.Name = "vm_create_by_template_aaa"
+	vm.VncPasswd = "12345678"
+	task, err := vmClient.SetVM(ctx, *vm)
+	if err != nil {
+		t.Fatalf("Failed to set vm. Error: %v", err)
+	} else {
+		t.Logf("Set VM Task: %+v\n", task)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
 	}
 }
 
@@ -50,11 +77,12 @@ func TestGetVMByUUID(t *testing.T) {
 
 	vmClient := NewVirtualMachineService(icsConnection.Client)
 
-	vm, err := vmClient.GetVMByUUID(ctx, "6c535536-6fe0-46ee-a20f-772dc0cd61ff")
-	if vm != nil {
-		fmt.Printf("%+v", vm)
+	vm, err := vmClient.GetVMByUUID(ctx, "71909586-f83b-45de-b620-4650aceb7865")
+	if err != nil || vm == nil {
+		t.Errorf("Failed to get vm info by specified uuid. Error: %v", err)
 	} else {
-		fmt.Println("No VM be found by you point id.")
+		vmJson, _ := json.MarshalIndent(vm, "", "\t")
+		t.Logf("VM Info: %s\n", string(vmJson))
 	}
 }
 
@@ -71,7 +99,7 @@ func TestGetVMByIP(t *testing.T) {
 	if vm != nil {
 		fmt.Printf("%+v", vm)
 	} else {
-		fmt.Println("No VM be found by you point id.")
+		fmt.Println("No VM be found by specified id.")
 	}
 }
 
@@ -88,7 +116,7 @@ func TestGetVMByName(t *testing.T) {
 	if vm != nil {
 		fmt.Printf("%+v", vm)
 	} else {
-		fmt.Println("No VM be found by you point id.")
+		fmt.Println("No VM be found by specified id.")
 	}
 }
 
@@ -114,6 +142,112 @@ func TestVMPageList(t *testing.T) {
 	vmpagelist, err := vmClient.VMPageList(req)
 	if vmpagelist != nil {
 		fmt.Printf("%+v", vmpagelist)
+	}
+}
+
+func TestPowerOnVM(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmId := "8ab0b28d77be994a0178110f28f110ce"
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	task, err := vmClient.PowerOnVM(ctx, vmId)
+	if err != nil {
+		t.Fatalf("Failed to poweron vm. Error: %v", err)
+	} else {
+		t.Logf("PowerOn VM Task: %+v\n", task)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
+	}
+}
+
+func TestPowerOffVM(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmId := "8ab0b28d77be994a0178110f28f110ce"
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	task, err := vmClient.PowerOffVM(ctx, vmId)
+	if err != nil {
+		t.Fatalf("Failed to poweroff vm. Error: %v", err)
+	} else {
+		t.Logf("PowerOff VM Task: %+v\n", task)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
+	}
+}
+
+func TestShutdownVM(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmId := "8ab0b28d77be994a0178110f28f110ce"
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	task, err := vmClient.ShutdownVM(ctx, vmId)
+	if err != nil {
+		t.Fatalf("Failed to shutdown vm. Error: %v", err)
+	} else {
+		t.Logf("Shutdown VM Task: %+v\n", task)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
+	}
+}
+
+func TestDeleteVM(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmId := "8ab0b28d77be994a01780f7372a60f07"
+	deleteFile := true
+	removeData := true
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	task, err := vmClient.DeleteVM(ctx, vmId, deleteFile, removeData)
+	if err != nil {
+		t.Fatalf("Failed to delete vm. Error: %v", err)
+	} else {
+		t.Logf("Delete VM Task: %+v\n", task)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
 	}
 }
 
@@ -201,7 +335,7 @@ func TestCreateVMByTemplate(t *testing.T) {
 		t.Fatalf("Failed to get vm template by name. Error: %v", err)
 	} else {
 		vmtJson, _ := json.MarshalIndent(vmt, "", "\t")
-		fmt.Printf("VMTemplate: %v\n", string(vmtJson))
+		t.Logf("VMTemplate: %v\n", string(vmtJson))
 	}
 
 	quickClone := false
@@ -210,16 +344,16 @@ func TestCreateVMByTemplate(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create vm by template. Error: %v", err)
 	} else {
-		fmt.Printf("Clone VM Task: %+v\n", task)
+		t.Logf("Clone VM Task: %+v\n", task)
 	}
 
-	fmt.Printf("Waiting task %v finish.....\n", task.TaskId)
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
 	taskInfo, err := vmClient.TraceTaskProcess(task)
 	if err != nil {
 		t.Fatalf("Failed to trace task. Error: %v", err)
 	} else {
 		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
-		fmt.Printf("Task Status: %v\n", string(taskJson))
+		t.Logf("Task Status: %v\n", string(taskJson))
 	}
 
 }

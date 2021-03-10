@@ -57,6 +57,21 @@ func (v *VirtualMachineService) PowerOnVM(ctx context.Context, id string) (*type
 	return task, err
 }
 
+func (v *VirtualMachineService) PowerOffVM(ctx context.Context, id string) (*types.Task, error) {
+	task, err := methods.PowerOffVMById(ctx, v.RestAPITripper, id)
+	return task, err
+}
+
+func (v *VirtualMachineService) ShutdownVM(ctx context.Context, id string) (*types.Task, error) {
+	task, err := methods.ShutdownVMById(ctx, v.RestAPITripper, id)
+	return task, err
+}
+
+func (v *VirtualMachineService) DeleteVM(ctx context.Context, id string, deleteFile bool, removeData bool) (*types.Task, error) {
+	task, err := methods.DeleteVMById(ctx, v.RestAPITripper, id, deleteFile, removeData)
+	return task, err
+}
+
 func (v *VirtualMachineService) CreateVMByTemplate(ctx context.Context, vmSpec types.VirtualMachine, quickClone bool) (*types.Task, error) {
 	task, err := methods.CreateVMByTemplate(ctx, v.RestAPITripper, vmSpec, quickClone)
 	return task, err
