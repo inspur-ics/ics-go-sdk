@@ -12,7 +12,7 @@ import (
     "sync"
     "time"
 
-    "github.com/go-resty/resty"
+    "github.com/go-resty/resty/v2"
     "k8s.io/klog"
 )
 
