@@ -1,5 +1,7 @@
 package types
 
+import "reflect"
+
 type ManagedObjectReference struct {
     Type  string
     Value string
@@ -83,4 +85,22 @@ type UserSession struct {
 }
 
 type ServiceContent struct {
+}
+
+type DynamicData struct {
+}
+
+func init() {
+    t["DynamicData"] = reflect.TypeOf((*DynamicData)(nil)).Elem()
+}
+
+type OptionValue struct {
+    DynamicData
+
+    Key   string  `json:"key"`
+    Value AnyType `json:"value"`
+}
+
+func init() {
+    t["OptionValue"] = reflect.TypeOf((*OptionValue)(nil)).Elem()
 }
