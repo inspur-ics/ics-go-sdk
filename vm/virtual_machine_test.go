@@ -12,8 +12,8 @@ import (
 var (
 	icsConnection = &icsgo.ICSConnection{
 		Username: "admin",
-		Password: "Cloud@s1",
-		Hostname: "10.48.50.13",
+		Password: "admin@inspur", // "Cloud@s1"
+		Hostname: "10.7.11.90",   // "10.48.50.13"
 		Port:     "443",
 		Insecure: true,
 	}
@@ -44,12 +44,12 @@ func TestSetVM(t *testing.T) {
 	}
 
 	vmClient := NewVirtualMachineService(icsConnection.Client)
-	vm, err := vmClient.GetVM(ctx, "8ab0b28d77be994a017819e3f65f1169")
+	vm, err := vmClient.GetVM(ctx, "8a878bda6f6f3ca4016f6f6eb8d300bb")
 	if err != nil {
 		t.Fatalf("Failed to get vm info by specified id. Error: %v", err)
 	}
 
-	vm.Name = "vm_create_by_template_aaa"
+	vm.Name = "11.82_zhanghuijian00"
 	vm.VncPasswd = "12345678"
 	task, err := vmClient.SetVM(ctx, *vm)
 	if err != nil {
@@ -58,8 +58,16 @@ func TestSetVM(t *testing.T) {
 		t.Logf("Set VM Task: %+v\n", task)
 	}
 
+	taskInfo, err := vmClient.GetTaskInfo(task)
+	if err != nil {
+		t.Fatalf("Failed to get task info. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Info: %v\n", string(taskJson))
+	}
+
 	t.Logf("Waiting task %v finish.....\n", task.TaskId)
-	taskInfo, err := vmClient.TraceTaskProcess(task)
+	taskInfo, err = vmClient.TraceTaskProcess(task)
 	if err != nil {
 		t.Fatalf("Failed to trace task. Error: %v", err)
 	} else {
