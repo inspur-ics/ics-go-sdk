@@ -1,4 +1,5 @@
 package methods
+
 import (
 	"context"
 	"encoding/json"
@@ -8,7 +9,7 @@ import (
 )
 
 func GetStoragePageList(ctx context.Context, r restful.RestAPITripper, req *types.StoragePageReq) (*types.StoragePageResponse, error) {
-	var api          types.ICSApi
+	var api types.ICSApi
 	var response = types.StoragePageResponse{}
 
 	api.Api = "/storages/"
@@ -24,19 +25,17 @@ func GetStoragePageList(ctx context.Context, r restful.RestAPITripper, req *type
 	}
 
 	return &response, err
-
-
 }
 
 func GetStorageInfo(ctx context.Context, r restful.RestAPITripper, storageId string) (*types.Storage, error) {
-	var reqBody      *types.Common
-	var api          types.ICSApi
+	var reqBody *types.Common
+	var api types.ICSApi
 	var response = types.Storage{}
 
 	if len(storageId) <= 0 {
 		storageId = "anonymous"
 	}
-	api.Api = fmt.Sprintf("/storages/%s",storageId)
+	api.Api = fmt.Sprintf("/storages/%s", storageId)
 	api.Token = true
 
 	resp, err := r.GetTrip(ctx, api, reqBody)
@@ -51,8 +50,8 @@ func GetStorageInfo(ctx context.Context, r restful.RestAPITripper, storageId str
 	return &response, err
 }
 func GetStorageList(ctx context.Context, r restful.RestAPITripper) (*types.StoragePageResponse, error) {
-	var reqBody      *types.Common
-	var api          types.ICSApi
+	var reqBody *types.Common
+	var api types.ICSApi
 	var response = types.StoragePageResponse{}
 
 	api.Api = "/storages/"

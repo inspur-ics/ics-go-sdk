@@ -8,12 +8,9 @@ import (
 	"testing"
 )
 
-var storageClient *StorageService
-var icsConnection icsgo.ICSConnection
-var ctx context.Context
-
-func TestStorageList(t *testing.T) {
-	fmt.Println("********************TestStorageList**************")
+var (
+	ctx           context.Context
+	storageClient *StorageService
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "admin@inspur",
@@ -21,6 +18,10 @@ func TestStorageList(t *testing.T) {
 		Port:     "443",
 		Insecure: true,
 	}
+)
+
+func TestStorageList(t *testing.T) {
+	fmt.Println("********************TestStorageList**************")
 	ctx = context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
@@ -39,6 +40,25 @@ func TestStorageList(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 }
+
+func TestStorageInfoByName(t *testing.T) {
+	fmt.Println("********************TestStorageInfoByName**************")
+	ctx = context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	storageClient = NewStorageService(icsConnection.Client)
+	storageInfo, err := storageClient.GetStorageInfoByName(ctx, "local")
+	if storageInfo != nil {
+		fmt.Println(storageInfo.Name)
+		fmt.Println(storageInfo.MountPath)
+	} else {
+		fmt.Println("DataStore not found.")
+	}
+}
+
 func TestStorageInfoById(t *testing.T) {
 	fmt.Println("********************TestStorageInfoById**************")
 	storageinfo, err := storageClient.GetStorageInfoById(ctx, "8a878bda6f6f3ca4016f6f458b50003c")
@@ -49,6 +69,7 @@ func TestStorageInfoById(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 }
+
 func TestStoragePageList(t *testing.T) {
 	fmt.Println("********************TestStoragePageList**************")
 	pakg := types.PageReq{
