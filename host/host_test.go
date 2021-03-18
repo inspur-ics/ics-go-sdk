@@ -2,17 +2,13 @@ package host
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	//"fmt"
 	icsgo "github.com/inspur-ics/ics-go-sdk"
 	"testing"
 )
 
-var hostClient *HostService
-var icsConnection icsgo.ICSConnection
-var ctx context.Context
-var hostid string
-func TestHostList(t *testing.T) {
-	fmt.Println("********************TestHostList**************")
+var (
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "admin@inspur",
@@ -20,60 +16,141 @@ func TestHostList(t *testing.T) {
 		Port:     "443",
 		Insecure: true,
 	}
-	ctx = context.Background()
+)
+
+func TestGetHostList(t *testing.T) {
+	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
 		t.Fatal("Create ics connection error!")
 	}
 
-	hostClient = NewHostService(icsConnection.Client)
-	hostlist, err := hostClient.GetHostList(ctx)
-	if hostlist != nil {
-		for i := 0; i < len(hostlist); {
-			fmt.Println(hostlist[i].Name)
-			fmt.Println(hostlist[i].IP)
-			hostid = hostlist[i].ID
-			i++
-		}
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetHostList(ctx)
+	if err != nil {
+		t.Errorf("Failed to get host list. Error: %v\n", err.Error())
 	} else {
-		fmt.Println(err.Error())
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
 	}
 }
-func TestGetHostAccessibleDatastoreList(t *testing.T) {
-	fmt.Println("********************GetHostAccessibleDatastoreList**************")
-	ctx = context.Background()
+
+func TestGetHostListByClusterID(t *testing.T) {
+	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
-	hostClient = NewHostService(icsConnection.Client)
-	storagelist, err := hostClient.GetHostAccessibleDatastoreList(ctx,hostid)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	clusterID := "8a878bda6f7012c7016f87e979120798"
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetHostListByClusterID(ctx, clusterID)
+	if err != nil {
+		t.Errorf("Failed to get host list by clusterID. Error: %v\n", err.Error())
+	} else {
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
+	}
+}
+
+func TestGetHostListByClusterName(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	clusterName := "cluster"
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetHostListByClusterName(ctx, clusterName)
+	if err != nil {
+		t.Errorf("Failed to get host list by clusterName. Error: %v\n", err.Error())
+	} else {
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
+	}
+}
+
+func TestGetHostListByStorageID(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	storageID := "8a878bda6f6f3ca4016f6f458b50003c"
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetHostListByStorageID(ctx, storageID)
+	if err != nil {
+		t.Errorf("Failed to get host list by storageID. Error: %v\n", err.Error())
+	} else {
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
+	}
+}
+
+func TestGetAvailHostListByStorageID(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	storageID := "8a878bda6f6f3ca4016f6f458b50003c"
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetAvailHostListByStorageID(ctx, storageID)
+	if err != nil {
+		t.Errorf("Failed to get avail host list by storageID. Error: %v\n", err.Error())
+	} else {
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
+	}
+}
+
+func TestGetHostAccessibleDatastoreList(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	hostid := "792b1e3f-8be6-43de-b8c7-27a0327dcd97"
+	hostClient := NewHostService(icsConnection.Client)
+	storagelist, err := hostClient.GetHostAccessibleDatastoreList(ctx, hostid)
 	if storagelist != nil {
-		for i := 0; i < len(storagelist); {
-			fmt.Println(storagelist[i].Name)
-			i++
+		for i := range storagelist {
+			t.Logf("StorageName: %s\n", storagelist[i].Name)
 		}
 	} else {
-		fmt.Println(err.Error())
+		t.Logf("Failed to get datastore list. Error: %v\n", err.Error())
 	}
 }
 
 func TestGetHostListByDC(t *testing.T) {
-	icsConnection = icsgo.ICSConnection{
-		Username: "admin",
-		Password: "admin@inspur",
-		Hostname: "10.7.11.90",
-		Port:     "443",
-		Insecure: true,
-	}
-	ctx = context.Background()
+	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
 		t.Fatal("Create ics connection error!")
 	}
 
-	hostClient = NewHostService(icsConnection.Client)
+	hostClient := NewHostService(icsConnection.Client)
 	hostlist, err := hostClient.GetHostListByDC(ctx, "3f0094542ebb11eaa2691a130ac12531")
-	if hostlist != nil && len(hostlist) >= 1{
-		fmt.Printf("%+v", hostlist[0])
+	if hostlist != nil && len(hostlist) >= 1 {
+		for _, hostInfo := range hostlist {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
 	} else if err != nil {
-		fmt.Println(err.Error())
+		t.Errorf("Failed to get host list by dc. Error: %v\n", err.Error())
 	}
 }

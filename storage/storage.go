@@ -36,8 +36,9 @@ func (sts *StorageService) GetStorageInfoById(ctx context.Context, id string) (*
 	storage, err := methods.GetStorageInfo(ctx, sts.RestAPITripper, id)
 	return storage, err
 }
-func (v *StorageService) GetStoragePageList(req *types.StoragePageReq) (*types.StoragePageResponse, error) {
+
+func (sts *StorageService) GetStoragePageList(req *types.StoragePageReq) (*types.StoragePageResponse, error) {
 	ctx := context.Background()
-	storagePages, err := methods.GetStoragePageList(ctx, v.RestAPITripper, req)
+	storagePages, err := methods.GetStoragePageList(ctx, sts.RestAPITripper, req)
 	return storagePages, err
 }

@@ -23,6 +23,34 @@ func (h *HostService) GetHostListByDC(ctx context.Context, datacenterPath string
 	return hostslist, err
 }
 
+func (h *HostService) GetHostListByClusterID(ctx context.Context, clusterID string) ([]*types.Host, error) {
+	var hostslist []*types.Host
+	hostResp, err := methods.GetHostList(ctx, h.RestAPITripper)
+	if err != nil {
+		return hostslist, err
+	}
+	for i := range hostResp.Items {
+		if hostResp.Items[i].ClusterID == clusterID {
+			hostslist = append(hostslist, &hostResp.Items[i])
+		}
+	}
+	return hostslist, err
+}
+
+func (h *HostService) GetHostListByClusterName(ctx context.Context, clusterName string) ([]*types.Host, error) {
+	var hostslist []*types.Host
+	hostResp, err := methods.GetHostList(ctx, h.RestAPITripper)
+	if err != nil {
+		return hostslist, err
+	}
+	for i := range hostResp.Items {
+		if hostResp.Items[i].ClusterName == clusterName {
+			hostslist = append(hostslist, &hostResp.Items[i])
+		}
+	}
+	return hostslist, err
+}
+
 func (h *HostService) GetHostAvailStorages(ctx context.Context, hostUUID string) ([]*types.Storage, error) {
 	var storageList []*types.Storage
 	storages, err := methods.GetHostAvailStorages(ctx, h.RestAPITripper, hostUUID)
@@ -34,11 +62,22 @@ func (h *HostService) GetHostAvailStorages(ctx context.Context, hostUUID string)
 	return storageList, err
 }
 
-func (hostserver *HostService) GetHostList(ctx context.Context) ([]types.Host, error) {
-	hostlist, err := methods.GetHostList(ctx, hostserver.RestAPITripper)
+func (h *HostService) GetHostList(ctx context.Context) ([]types.Host, error) {
+	hostlist, err := methods.GetHostList(ctx, h.RestAPITripper)
 	return hostlist.Items, err
 }
-func (hostserver *HostService) GetHostAccessibleDatastoreList(ctx context.Context, hostid string) ([]types.Storage, error) {
-	storagelist, err := methods.GetHostAccessibleDatastoreList(ctx, hostserver.RestAPITripper,hostid)
+
+func (h *HostService) GetHostListByStorageID(ctx context.Context, storageID string) ([]types.Host, error) {
+	hostlist, err := methods.GetHostListByStorageID(ctx, h.RestAPITripper, storageID)
+	return hostlist.Items, err
+}
+
+func (h *HostService) GetAvailHostListByStorageID(ctx context.Context, storageID string) ([]types.Host, error) {
+	hostlist, err := methods.GetAvailHostListByStorageID(ctx, h.RestAPITripper, storageID)
+	return hostlist, err
+}
+
+func (h *HostService) GetHostAccessibleDatastoreList(ctx context.Context, hostid string) ([]types.Storage, error) {
+	storagelist, err := methods.GetHostAccessibleDatastoreList(ctx, h.RestAPITripper, hostid)
 	return storagelist, err
 }
