@@ -77,6 +77,45 @@ func (h *HostService) GetAvailHostListByStorageID(ctx context.Context, storageID
 	return hostlist, err
 }
 
+func (h *HostService) GetHostListBySwitchID(ctx context.Context, switchID string) ([]types.Host, error) {
+	hostlist, err := methods.GetHostListBySwitchID(ctx, h.RestAPITripper, switchID)
+	return hostlist.Items, err
+}
+
+func (h *HostService) GetHostListByNetworkID(ctx context.Context, networkID string) ([]types.Host, error) {
+	var hostList []types.Host
+	network, err := methods.GetNetworkByID(ctx, h.RestAPITripper, networkID)
+	if err != nil {
+		return hostList, err
+	}
+
+	hostPageList, err := methods.GetHostListBySwitchID(ctx, h.RestAPITripper, network.VswitchDto.ID)
+	return hostPageList.Items, err
+}
+
+func (h *HostService) GetHostListByNetworkName(ctx context.Context, networkName string) ([]types.Host, error) {
+	var network types.Network
+	var hostList []types.Host
+	networkList, err := methods.GetNetworkList(ctx, h.RestAPITripper)
+	if err != nil {
+		return hostList, err
+	}
+
+	found := false
+	for _, network = range networkList {
+		if network.Name == networkName {
+			found = true
+			break
+		}
+	}
+	if !found {
+		return hostList, err
+	}
+
+	hostPageList, err := methods.GetHostListBySwitchID(ctx, h.RestAPITripper, network.VswitchDto.ID)
+	return hostPageList.Items, err
+}
+
 func (h *HostService) GetHostAccessibleDatastoreList(ctx context.Context, hostid string) ([]types.Storage, error) {
 	storagelist, err := methods.GetHostAccessibleDatastoreList(ctx, h.RestAPITripper, hostid)
 	return storagelist, err

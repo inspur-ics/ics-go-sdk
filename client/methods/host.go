@@ -4,8 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-
-	//	"fmt"
 	"github.com/inspur-ics/ics-go-sdk/client/restful"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
 )
@@ -101,6 +99,25 @@ func GetAvailHostListByStorageID(ctx context.Context, r restful.RestAPITripper, 
 	var response []types.Host
 
 	api.Api = fmt.Sprintf("/storages/%s/availhosts", storageID)
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+	return response, err
+}
+
+func GetHostListBySwitchID(ctx context.Context, r restful.RestAPITripper, switchID string) (types.HostPageResponse, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response types.HostPageResponse
+
+	api.Api = fmt.Sprintf("/vswitchs/%s/hosts", switchID)
 	api.Token = true
 
 	resp, err := r.GetTrip(ctx, api, reqBody)
