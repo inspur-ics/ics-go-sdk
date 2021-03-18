@@ -137,6 +137,26 @@ func TestGetHostListBySwitchID(t *testing.T) {
 	}
 }
 
+func TestGetHostListByNetworkID(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	networkID := "8a878bda6f6f3ca4016f6f4409bf002e"
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetHostListByNetworkID(ctx, networkID)
+	if err != nil {
+		t.Errorf("Failed to get host list by networkID. Error: %v\n", err.Error())
+	} else {
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
+	}
+}
+
 func TestGetHostListByNetworkName(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)

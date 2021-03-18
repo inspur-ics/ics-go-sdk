@@ -82,6 +82,17 @@ func (h *HostService) GetHostListBySwitchID(ctx context.Context, switchID string
 	return hostlist.Items, err
 }
 
+func (h *HostService) GetHostListByNetworkID(ctx context.Context, networkID string) ([]types.Host, error) {
+	var hostList []types.Host
+	network, err := methods.GetNetworkByID(ctx, h.RestAPITripper, networkID)
+	if err != nil {
+		return hostList, err
+	}
+
+	hostPageList, err := methods.GetHostListBySwitchID(ctx, h.RestAPITripper, network.VswitchDto.ID)
+	return hostPageList.Items, err
+}
+
 func (h *HostService) GetHostListByNetworkName(ctx context.Context, networkName string) ([]types.Host, error) {
 	var network types.Network
 	var hostList []types.Host
