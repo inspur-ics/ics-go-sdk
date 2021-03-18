@@ -21,23 +21,27 @@ type Storage struct {
 		HostName         string `json:"hostName"`
 		Status           string `json:"status"`
 	} `json:"dataCenterOrHostDto"`
-	BlockDeviceDto    string `json:"blockDeviceDto"`
-	DataCenterDto     string `json:"dataCenterDto"`
-	HostNumbers       int    `json:"hostNumbers"`
-	VMNumbers         int    `json:"vmNumbers"`
-	VolumesNumbers    int    `json:"volumesNumbers"`
-	VMTemplateNumbers int    `json:"vmTemplateNumbers"`
-	Tags              string `json:"tags"`
-	MaxSlots          int    `json:"maxSlots"`
-	Creating          bool   `json:"creating"`
-	StorageBackUp     bool   `json:"storageBackUp"`
-	ExtensionType     string `json:"extensionType"`
-	CanBeImageStorage bool   `json:"canBeImageStorage"`
-	BlockDeviceUUID   string `json:"blockDeviceUuid"`
-	OpHostIP          string `json:"opHostIp"`
-	IsMount           string `json:"isMount"`
-	HostDto           string `json:"hostDto"`
-	ScvmOn            bool   `json:"scvmOn"`
+	BlockDeviceDto    interface{} `json:"blockDeviceDto"`
+	DataCenterDto     interface{} `json:"dataCenterDto"`
+	HostNumbers       int         `json:"hostNumbers"`
+	VMNumbers         int         `json:"vmNumbers"`
+	VolumesNumbers    int         `json:"volumesNumbers"`
+	VMTemplateNumbers int         `json:"vmTemplateNumbers"`
+	Tags              string      `json:"tags"`
+	MaxSlots          int         `json:"maxSlots"`
+	Creating          bool        `json:"creating"`
+	StorageBackUp     bool        `json:"storageBackUp"`
+	ExtensionType     string      `json:"extensionType"`
+	CanBeImageStorage bool        `json:"canBeImageStorage"`
+	MultiplexRatio    float64     `json:"multiplexRatio"`
+	Oplimit           bool        `json:"oplimit"`
+	Maxop             int         `json:"maxop"`
+	MountStateCount   string      `json:"mountStateCount"`
+	BlockDeviceUUID   string      `json:"blockDeviceUuid"`
+	OpHostIP          string      `json:"opHostIp"`
+	IsMount           string      `json:"isMount"`
+	HostDto           string      `json:"hostDto"`
+	ScvmOn            bool        `json:"scvmOn"`
 }
 type StoragePageResponse struct {
 	PageResponse

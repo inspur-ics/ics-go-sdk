@@ -2,7 +2,7 @@ package types
 
 type Host struct {
 	ID                  string        `json:"id"`
-	IP                  string   `json:"ip"`
+	IP                  string        `json:"ip"`
 	SwitchUplinkPortDto interface{}   `json:"switchUplinkPortDto"`
 	UplinkTopoDto       interface{}   `json:"uplinkTopoDto"`
 	Pnics               interface{}   `json:"pnics"`
@@ -66,8 +66,8 @@ type Host struct {
 }
 
 type HostPageResponse struct {
-	TotalPage   int     `json:"totalPage"`
-	CurrentPage int     `json:"currentPage"`
-	TotalSize   int     `json:"totalSize"`
-	Items       []Host  `json:"items"`
+	TotalPage   int    `json:"totalPage"`
+	CurrentPage int    `json:"currentPage"`
+	TotalSize   int    `json:"totalSize"`
+	Items       []Host `json:"items"`
 }

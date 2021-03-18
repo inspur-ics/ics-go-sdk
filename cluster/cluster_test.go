@@ -1,16 +1,14 @@
 package cluster
+
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	//"fmt"
 	icsgo "github.com/inspur-ics/ics-go-sdk"
 	"testing"
 )
 
-var clusterClient *ClusterService
-var icsConnection icsgo.ICSConnection
-var ctx context.Context
-func TestClusterList(t *testing.T) {
-	fmt.Println("********************TestClusterList**************")
+var (
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "admin@inspur",
@@ -18,20 +16,22 @@ func TestClusterList(t *testing.T) {
 		Port:     "443",
 		Insecure: true,
 	}
-	ctx = context.Background()
+)
+
+func TestGetClusterList(t *testing.T) {
+	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
 		t.Fatal("Create ics connection error!")
 	}
-	clusterClient=NewClusterService(icsConnection.Client)
-	clusterlist, err := clusterClient.GetClusterList(ctx)
+	clusterClient := NewClusterService(icsConnection.Client)
+	clusterList, err := clusterClient.GetClusterList(ctx)
 	if err == nil {
-		for i := 0; i < len(clusterlist); {
-			fmt.Println(clusterlist[i].Id)
-			fmt.Println(clusterlist[i].Name)
-			i++
+		for i := range clusterList {
+			clusterJson, _ := json.MarshalIndent(clusterList[i], "", "\t")
+			t.Logf("ClusterInfo: %v\n", string(clusterJson))
 		}
 	} else {
-		fmt.Println(err.Error())
+		t.Errorf("Failed to get cluster list. Error: %v\n", err.Error())
 	}
 }
