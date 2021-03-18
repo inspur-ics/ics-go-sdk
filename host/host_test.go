@@ -117,6 +117,46 @@ func TestGetAvailHostListByStorageID(t *testing.T) {
 	}
 }
 
+func TestGetHostListBySwitchID(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	switchID := "3f27df9d2ebb11eaa2691a130ac12531"
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetHostListBySwitchID(ctx, switchID)
+	if err != nil {
+		t.Errorf("Failed to get host list by switchID. Error: %v\n", err.Error())
+	} else {
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
+	}
+}
+
+func TestGetHostListByNetworkName(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	networkName := "manageNetwork0"
+	hostClient := NewHostService(icsConnection.Client)
+	hostList, err := hostClient.GetHostListByNetworkName(ctx, networkName)
+	if err != nil {
+		t.Errorf("Failed to get host list by networkName. Error: %v\n", err.Error())
+	} else {
+		for _, hostInfo := range hostList {
+			hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+			t.Logf("Host Info: %s\n", string(hostJson))
+		}
+	}
+}
+
 func TestGetHostAccessibleDatastoreList(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
