@@ -2,12 +2,26 @@ package cluster
 
 import (
 	"context"
+	"fmt"
 	"github.com/inspur-ics/ics-go-sdk/client/methods"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
 	//    "k8s.io/klog"
 )
 
-func (h *ClusterService) GetClusterList(ctx context.Context) ([]types.Cluster, error) {
-	clusterlist, err := methods.GetClusterList(ctx, h.RestAPITripper)
-	return clusterlist, err
+func (c *ClusterService) GetClusterList(ctx context.Context) ([]types.Cluster, error) {
+	clusterList, err := methods.GetClusterList(ctx, c.RestAPITripper)
+	return clusterList, err
+}
+
+func (c *ClusterService) GetClusterByName(ctx context.Context, name string) (*types.Cluster, error) {
+	clusterList, err := methods.GetClusterList(ctx, c.RestAPITripper)
+	if err != nil {
+		return nil, err
+	}
+	for _, cluster := range clusterList {
+		if cluster.Name == name {
+			return &cluster, nil
+		}
+	}
+	return nil, fmt.Errorf("Cluster not found by name %s", name)
 }
