@@ -1,0 +1,36 @@
+package vapp
+
+import (
+	"context"
+	"fmt"
+	"github.com/inspur-ics/ics-go-sdk/client/methods"
+	"github.com/inspur-ics/ics-go-sdk/client/types"
+)
+
+func (v *VappService) GetVappList(ctx context.Context) ([]types.Vapp, error) {
+	vappList, err := methods.GetVappList(ctx, v.RestAPITripper)
+	return vappList, err
+}
+
+func (v *VappService) GetVappByName(ctx context.Context, name string) (*types.Vapp, error) {
+	vappList, err := methods.GetVappList(ctx, v.RestAPITripper)
+	if err != nil {
+		return nil, err
+	}
+	for _, vapp := range vappList {
+		if vapp.Name == name {
+			return &vapp, nil
+		}
+	}
+	return nil, fmt.Errorf("Vapp not found by name %s", name)
+}
+
+func (v *VappService) CreateVapp(ctx context.Context, req types.VappCreateReq) (types.Task, error) {
+	task, err := methods.CreateVapp(ctx, v.RestAPITripper, req)
+	return task, err
+}
+
+func (v *VappService) DeleteVapp(ctx context.Context, vappID string) (types.Task, error) {
+	task, err := methods.DeleteVapp(ctx, v.RestAPITripper, vappID)
+	return task, err
+}
