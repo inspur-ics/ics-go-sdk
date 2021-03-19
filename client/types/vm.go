@@ -129,7 +129,7 @@ type VirtualMachine struct {
 	ID                       string          `json:"id"`
 	CustomVmId               string          `json:"customVmId"`
 	Name                     string          `json:"name"`
-	State                    string          `json:"state"`
+	PowerState               VMPowerState    `json:"state"`
 	Status                   string          `json:"status"`
 	HostID                   string          `json:"hostId"`
 	HostName                 string          `json:"hostName"`
@@ -234,3 +234,5 @@ type VMPageResponse struct {
 type VMPageReq struct {
 	PageReq
 }
+
+type VMPowerState string

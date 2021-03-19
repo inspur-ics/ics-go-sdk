@@ -106,3 +106,21 @@ func (v *VirtualMachineService) GetVMTemplateByName(ctx context.Context, name st
 	}
 	return nil, err
 }
+
+func (v *VirtualMachineService) GetVMPowerStateByID(ctx context.Context, id string) (*types.VMPowerState, error) {
+	vm, err := methods.GetVMById(ctx, v.RestAPITripper, id)
+
+	if vm.Status == "STARTED" {
+		vm.PowerState = "poweredOn"
+		return &vm.PowerState, err
+	}else if vm.Status == "STOPPED" {
+		vm.PowerState = "poweredOff"
+		return &vm.PowerState, err
+	}else if vm.Status == "PAUSED"{
+		vm.PowerState = "paused"
+		return &vm.PowerState, err
+	}else {
+		vm.PowerState = "other"
+		return &vm.PowerState, err
+	}
+}
