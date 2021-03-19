@@ -1,19 +1,19 @@
-package cluster
+package vapp
 
 import (
 	"github.com/inspur-ics/ics-go-sdk/client"
 	"github.com/inspur-ics/ics-go-sdk/common"
 )
 
-type ClusterService struct {
+type VappService struct {
 	common.RestAPI
 }
 
-func NewClusterService(c *client.Client) *ClusterService {
-	ht := ClusterService{
+func NewVappService(c *client.Client) *VappService {
+	vs := VappService{
 		common.RestAPI{
 			RestAPITripper: c,
 		},
 	}
-	return &ht
+	return &vs
 }
