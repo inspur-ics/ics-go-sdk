@@ -63,8 +63,8 @@ func TestCreateVapp(t *testing.T) {
 	}
 
 	vappReq := types.VappCreateReq{
-		Name:         "test_vapp",
-		Description:  "VAPP001",
+		Name:         "test_vapp2",
+		Description:  "VAPP002",
 		DataCenterID: "3f0094542ebb11eaa2691a130ac12531",
 	}
 	vappClient := NewVappService(icsConnection.Client)
@@ -95,4 +95,48 @@ func TestDeleteVapp(t *testing.T) {
 		taskJson, _ := json.MarshalIndent(task, "", "\t")
 		t.Logf("taskInfo: %v\n", string(taskJson))
 	}
+}
+
+func TestAddVmToVapp(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vappID := "8a878bda781f145e01784eed976501f7"
+	vmID := []string{"8a878bda6f7012c7016f70b40ed000a1"}
+	//vmID := []string{"8a878bda6f7012c7016f70b40ed000a1", "8a878bda6f6f3ca4016f6f6eb8d300bb"}
+	vappClient := NewVappService(icsConnection.Client)
+	task, err := vappClient.AddVmToVapp(ctx, vappID, vmID)
+	if err != nil {
+		t.Errorf("Failed to add vm to vapp. Error: %v\n", err)
+	} else {
+
+		taskJson, _ := json.MarshalIndent(task, "", "\t")
+		t.Logf("taskInfo: %v\n", string(taskJson))
+	}
+
+}
+
+func TestDeleteVmFromVapp(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vappID := "8a878bda781f145e01784eed976501f7"
+	vmID := []string{"8a878bda6f7012c7016f70b40ed000a1"}
+	//vmID := []string{"8a878bda6f7012c7016f70b40ed000a1", "8a878bda6f6f3ca4016f6f6eb8d300bb"}
+	vappClient := NewVappService(icsConnection.Client)
+	task, err := vappClient.DeleteVmFromVapp(ctx, vappID, vmID)
+	if err != nil {
+		t.Errorf("Failed to delete vm from vapp. Error: %v\n", err)
+	} else {
+
+		taskJson, _ := json.MarshalIndent(task, "", "\t")
+		t.Logf("taskInfo: %v\n", string(taskJson))
+	}
+
 }

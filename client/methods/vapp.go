@@ -63,3 +63,41 @@ func DeleteVapp(ctx context.Context, r restful.RestAPITripper, vappID string) (t
 
 	return response, err
 }
+
+func AddVmToVapp(ctx context.Context, r restful.RestAPITripper, vappID string, vmID []string) (types.Task, error) {
+	var api types.ICSApi
+	var response = types.Task{}
+
+	api.Api = fmt.Sprintf("/vclusters/%s/vms?action=shiftIn", vappID)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, vmID)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}
+
+func DeleteVmFromVapp(ctx context.Context, r restful.RestAPITripper, vappID string, vmID []string) (types.Task, error) {
+	var api types.ICSApi
+	var response = types.Task{}
+
+	api.Api = fmt.Sprintf("/vclusters/%s/vms?action=shiftOut", vappID)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, vmID)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}

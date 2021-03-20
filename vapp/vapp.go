@@ -34,3 +34,13 @@ func (v *VappService) DeleteVapp(ctx context.Context, vappID string) (types.Task
 	task, err := methods.DeleteVapp(ctx, v.RestAPITripper, vappID)
 	return task, err
 }
+
+func (v *VappService) AddVmToVapp(ctx context.Context, vappID string, vmID []string) (types.Task, error) {
+	task, err := methods.AddVmToVapp(ctx, v.RestAPITripper, vappID, vmID)
+	return task, err
+}
+
+func (v *VappService) DeleteVmFromVapp(ctx context.Context, vappID string, vmID []string) (types.Task, error) {
+	task, err := methods.DeleteVmFromVapp(ctx, v.RestAPITripper, vappID, vmID)
+	return task, err
+}
