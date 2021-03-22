@@ -365,3 +365,19 @@ func TestCreateVMByTemplate(t *testing.T) {
 	}
 
 }
+
+func TestGetVMPowerStateByID(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	status, err := vmClient.GetVMPowerStateByID(ctx, "8a878bda781f145e0178456029a8016c")
+	if status != nil {
+		fmt.Println(*status)
+	} else {
+		fmt.Println("No VM be found by you point id.")
+	}
+}

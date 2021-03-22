@@ -31,6 +31,29 @@ func GetHostById(ctx context.Context, r restful.RestAPITripper, hostUUID string)
 	return &response, err
 }
 
+func GetHostHealthInfoById(ctx context.Context, r restful.RestAPITripper, hostUUID string) (*types.HostHealthInfo, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.HostHealthInfo{}
+
+	if len(hostUUID) <= 0 {
+		hostUUID = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/hosts/%s/healthperform", hostUUID)
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
 func GetHostAvailStorages(ctx context.Context, r restful.RestAPITripper, hostUUID string) ([]types.Storage, error) {
 	var reqBody *types.Common
 	var api types.ICSApi

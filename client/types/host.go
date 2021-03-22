@@ -71,3 +71,25 @@ type HostPageResponse struct {
 	TotalSize   int    `json:"totalSize"`
 	Items       []Host `json:"items"`
 }
+
+type HostHealthInfo struct {
+	ID           string  `json:"id"`
+	IP           string  `json:"ip"`
+	Score        float64 `json:"score"`
+	CpuScore     float64 `json:"cpuScore"`
+	CpuPerf      float64 `json:"cpuPerf"`
+	CpuUsed      float64 `json:"cpuUsed"`
+	CpuTotal     float64 `json:"cpuTotal"`
+	MemScore     float64 `json:"memScore"`
+	MemPerf      float64 `json:"memPerf"`
+	MemUsed      float64 `json:"memUsed"`
+	MemTotal     float64 `json:"memTotal"`
+	StorageScore float64 `json:"storageScore"`
+	StoragePerf  float64 `json:"storagePerf"`
+	StorageUsed  float64 `json:"storageUsed"`
+	StorageTotal float64 `json:"storageTotal"`
+	NetworkScore float64 `json:"networkScore"`
+	NetworkPerf  float64 `json:"networkPerf"`
+	NetworkUsed  float64 `json:"networkUsed"`
+	NetworkTotal float64 `json:"networkTotal"`
+}

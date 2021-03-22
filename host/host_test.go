@@ -214,3 +214,22 @@ func TestGetHostListByDC(t *testing.T) {
 		t.Errorf("Failed to get host list by dc. Error: %v\n", err.Error())
 	}
 }
+
+func TestGetHostHealthInfo(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	hostUUID := "792b1e3f-8be6-43de-b8c7-27a0327dcd97"
+	hostClient := NewHostService(icsConnection.Client)
+	healthInfo, err := hostClient.GetHostHealthInfo(ctx, hostUUID)
+
+	if err != nil {
+		t.Errorf("Failed to get host health info. Error: %v\n", err.Error())
+	} else {
+		healthJson, _ := json.MarshalIndent(healthInfo, "", "\t")
+		t.Logf("HostHealth Info: %s\n", string(healthJson))
+	}
+}

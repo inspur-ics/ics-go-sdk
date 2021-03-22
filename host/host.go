@@ -12,6 +12,11 @@ func (h *HostService) GetHost(ctx context.Context, hostUUID string) (*types.Host
 	return host, err
 }
 
+func (h *HostService) GetHostHealthInfo(ctx context.Context, hostUUID string) (*types.HostHealthInfo, error) {
+	healthInfo, err := methods.GetHostHealthInfoById(ctx, h.RestAPITripper, hostUUID)
+	return healthInfo, err
+}
+
 func (h *HostService) GetHostListByDC(ctx context.Context, datacenterPath string) ([]*types.Host, error) {
 	var hostslist []*types.Host
 	hosts, err := methods.GetHostListByDC(ctx, h.RestAPITripper, datacenterPath)
