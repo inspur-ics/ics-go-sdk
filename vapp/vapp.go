@@ -44,3 +44,23 @@ func (v *VappService) DeleteVmFromVapp(ctx context.Context, vappID string, vmID 
 	task, err := methods.DeleteVmFromVapp(ctx, v.RestAPITripper, vappID, vmID)
 	return task, err
 }
+
+func (v *VappService) PowerOnVapp(ctx context.Context, vappID string) (types.Task, error) {
+	task, err := methods.PowerOnVapp(ctx, v.RestAPITripper, vappID)
+	return task, err
+}
+
+func (v *VappService) PowerOffVapp(ctx context.Context, vappID string) (types.Task, error) {
+	task, err := methods.PowerOffVapp(ctx, v.RestAPITripper, vappID)
+	return task, err
+}
+
+func (v *VappService) PowerOffVappSafely(ctx context.Context, vappID string) (types.Task, error) {
+	task, err := methods.PowerOffVappSafely(ctx, v.RestAPITripper, vappID)
+	return task, err
+}
+
+func (v *VappService) RestartVapp(ctx context.Context, vappID string) (types.Task, error) {
+	task, err := methods.RestartVapp(ctx, v.RestAPITripper, vappID)
+	return task, err
+}

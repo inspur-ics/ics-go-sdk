@@ -101,3 +101,83 @@ func DeleteVmFromVapp(ctx context.Context, r restful.RestAPITripper, vappID stri
 
 	return response, err
 }
+
+func PowerOnVapp(ctx context.Context, r restful.RestAPITripper, vappID string) (types.Task, error) {
+	var api types.ICSApi
+	var reqBody *types.Common
+	var response = types.Task{}
+
+	api.Api = fmt.Sprintf("/vclusters/%s?action=powerOn", vappID)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}
+
+func PowerOffVapp(ctx context.Context, r restful.RestAPITripper, vappID string) (types.Task, error) {
+	var api types.ICSApi
+	var reqBody *types.Common
+	var response = types.Task{}
+
+	api.Api = fmt.Sprintf("/vclusters/%s?action=powerOff", vappID)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}
+
+func PowerOffVappSafely(ctx context.Context, r restful.RestAPITripper, vappID string) (types.Task, error) {
+	var api types.ICSApi
+	var reqBody *types.Common
+	var response = types.Task{}
+
+	api.Api = fmt.Sprintf("/vclusters/%s?action=safelypowerOff", vappID)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}
+
+func RestartVapp(ctx context.Context, r restful.RestAPITripper, vappID string) (types.Task, error) {
+	var api types.ICSApi
+	var reqBody *types.Common
+	var response = types.Task{}
+
+	api.Api = fmt.Sprintf("/vclusters/%s?action=restart", vappID)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return response, err
+}

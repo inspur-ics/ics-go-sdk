@@ -72,7 +72,6 @@ func TestCreateVapp(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to create vapp. Error: %v\n", err)
 	} else {
-
 		taskJson, _ := json.MarshalIndent(task, "", "\t")
 		t.Logf("taskInfo: %v\n", string(taskJson))
 	}
@@ -91,7 +90,6 @@ func TestDeleteVapp(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to delete vapp. Error: %v\n", err)
 	} else {
-
 		taskJson, _ := json.MarshalIndent(task, "", "\t")
 		t.Logf("taskInfo: %v\n", string(taskJson))
 	}
@@ -112,7 +110,6 @@ func TestAddVmToVapp(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to add vm to vapp. Error: %v\n", err)
 	} else {
-
 		taskJson, _ := json.MarshalIndent(task, "", "\t")
 		t.Logf("taskInfo: %v\n", string(taskJson))
 	}
@@ -134,9 +131,80 @@ func TestDeleteVmFromVapp(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to delete vm from vapp. Error: %v\n", err)
 	} else {
-
 		taskJson, _ := json.MarshalIndent(task, "", "\t")
 		t.Logf("taskInfo: %v\n", string(taskJson))
 	}
 
+}
+
+func TestPowerOnVapp(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vappID := "8a878bda781f145e01784eed976501f7"
+	vappClient := NewVappService(icsConnection.Client)
+	task, err := vappClient.PowerOnVapp(ctx, vappID)
+	if err != nil {
+		t.Errorf("Failed to poweron vapp. Error: %v\n", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(task, "", "\t")
+		t.Logf("taskInfo: %v\n", string(taskJson))
+	}
+}
+
+func TestPowerOffVapp(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vappID := "8a878bda781f145e01784eed976501f7"
+	vappClient := NewVappService(icsConnection.Client)
+	task, err := vappClient.PowerOffVapp(ctx, vappID)
+	if err != nil {
+		t.Errorf("Failed to poweroff vapp. Error: %v\n", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(task, "", "\t")
+		t.Logf("taskInfo: %v\n", string(taskJson))
+	}
+}
+
+func TestPowerOffVappSafely(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vappID := "8a878bda781f145e01784eed976501f7"
+	vappClient := NewVappService(icsConnection.Client)
+	task, err := vappClient.PowerOffVappSafely(ctx, vappID)
+	if err != nil {
+		t.Errorf("Failed to poweroff vapp safely. Error: %v\n", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(task, "", "\t")
+		t.Logf("taskInfo: %v\n", string(taskJson))
+	}
+}
+
+func TestRestartVapp(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vappID := "8a878bda781f145e01784eed976501f7"
+	vappClient := NewVappService(icsConnection.Client)
+	task, err := vappClient.RestartVapp(ctx, vappID)
+	if err != nil {
+		t.Errorf("Failed to restart vapp. Error: %v\n", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(task, "", "\t")
+		t.Logf("taskInfo: %v\n", string(taskJson))
+	}
 }
