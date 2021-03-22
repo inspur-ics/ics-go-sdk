@@ -381,3 +381,25 @@ func TestGetVMPowerStateByID(t *testing.T) {
 		fmt.Println("No VM be found by you point id.")
 	}
 }
+
+func TestGetVMNetState(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	nic, err := vmClient.GetVMNetState(ctx, "8a878bda6f7012c7016f70b40ed000a1")
+	//nic, err := vmClient.GetVMNetState(ctx, "8a878bda781f145e0178456029a8016c")
+
+	if err != nil {
+		t.Fatalf("No VM be found by you point id.")
+	} else {
+		for _, data := range nic{
+			fmt.Println("-----------------------")
+			fmt.Println(data)
+			fmt.Println("-----------------------")
+		}
+	}
+}

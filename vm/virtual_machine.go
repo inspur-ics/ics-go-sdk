@@ -124,3 +124,9 @@ func (v *VirtualMachineService) GetVMPowerStateByID(ctx context.Context, id stri
 		return &vm.PowerState, err
 	}
 }
+
+func (v *VirtualMachineService) GetVMNetState(ctx context.Context, id string) ([]types.Nic, error) {
+	vm, err := methods.GetVMById(ctx, v.RestAPITripper, id)
+	nic := vm.Nics
+	return nic, err
+}
