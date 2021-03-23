@@ -49,8 +49,8 @@ func TestSetVM(t *testing.T) {
 		t.Fatalf("Failed to get vm info by specified id. Error: %v", err)
 	}
 
-	vm.Name = "11.82_zhanghuijian00"
-	vm.VncPasswd = "12345678"
+	vm.Name = "11.82_zhanghuijian1"
+	//vm.VncPasswd = "12345678"
 	task, err := vmClient.SetVM(ctx, *vm)
 	if err != nil {
 		t.Fatalf("Failed to set vm. Error: %v", err)
@@ -396,7 +396,7 @@ func TestGetVMNetState(t *testing.T) {
 	if err != nil {
 		t.Fatalf("No VM be found by you point id.")
 	} else {
-		for _, data := range nic{
+		for _, data := range nic {
 			fmt.Println("-----------------------")
 			fmt.Println(data)
 			fmt.Println("-----------------------")
