@@ -12,6 +12,7 @@ func (v *VirtualMachineService) GetVM(ctx context.Context, id string) (*types.Vi
 }
 
 func (v *VirtualMachineService) SetVM(ctx context.Context, vmInfo types.VirtualMachine) (*types.Task, error) {
+	vmInfo.VncPasswd = "12345678"
 	task, err := methods.SetVM(ctx, v.RestAPITripper, vmInfo)
 	return task, err
 }
@@ -113,14 +114,20 @@ func (v *VirtualMachineService) GetVMPowerStateByID(ctx context.Context, id stri
 	if vm.Status == "STARTED" {
 		vm.PowerState = "poweredOn"
 		return &vm.PowerState, err
-	}else if vm.Status == "STOPPED" {
+	} else if vm.Status == "STOPPED" {
 		vm.PowerState = "poweredOff"
 		return &vm.PowerState, err
-	}else if vm.Status == "PAUSED"{
+	} else if vm.Status == "PAUSED" {
 		vm.PowerState = "paused"
 		return &vm.PowerState, err
-	}else {
+	} else {
 		vm.PowerState = "other"
 		return &vm.PowerState, err
 	}
+}
+
+func (v *VirtualMachineService) GetVMNetState(ctx context.Context, id string) ([]types.Nic, error) {
+	vm, err := methods.GetVMById(ctx, v.RestAPITripper, id)
+	nic := vm.Nics
+	return nic, err
 }

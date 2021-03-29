@@ -49,8 +49,8 @@ func TestSetVM(t *testing.T) {
 		t.Fatalf("Failed to get vm info by specified id. Error: %v", err)
 	}
 
-	vm.Name = "11.82_zhanghuijian00"
-	vm.VncPasswd = "12345678"
+	vm.Name = "11.82_zhanghuijian1"
+	//vm.VncPasswd = "12345678"
 	task, err := vmClient.SetVM(ctx, *vm)
 	if err != nil {
 		t.Fatalf("Failed to set vm. Error: %v", err)
@@ -379,5 +379,27 @@ func TestGetVMPowerStateByID(t *testing.T) {
 		fmt.Println(*status)
 	} else {
 		fmt.Println("No VM be found by you point id.")
+	}
+}
+
+func TestGetVMNetState(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	nic, err := vmClient.GetVMNetState(ctx, "8a878bda6f7012c7016f70b40ed000a1")
+	//nic, err := vmClient.GetVMNetState(ctx, "8a878bda781f145e0178456029a8016c")
+
+	if err != nil {
+		t.Fatalf("No VM be found by you point id.")
+	} else {
+		for _, data := range nic {
+			fmt.Println("-----------------------")
+			fmt.Println(data)
+			fmt.Println("-----------------------")
+		}
 	}
 }
