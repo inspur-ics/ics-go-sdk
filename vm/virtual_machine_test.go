@@ -231,6 +231,32 @@ func TestShutdownVM(t *testing.T) {
 	}
 }
 
+func TestRestartVM(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmId := "8a878bda6f6f3ca4016f6f6eb8d300bb"
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	task, err := vmClient.RestartVM(ctx, vmId)
+	if err != nil {
+		t.Fatalf("Failed to restart vm. Error: %v", err)
+	} else {
+		t.Logf("Restart VM Task: %+v\n", task)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
+	}
+}
+
 func TestDeleteVM(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)

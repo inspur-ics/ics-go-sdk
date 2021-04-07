@@ -224,6 +224,7 @@ type VirtualMachine struct {
 	GuestOSAuthInfo          GuestOSAuthInfo `json:"guestOSAuthInfo"`
 	AwareNumaEnabled         bool            `json:"awareNumaEnabled"`
 	ExtendData               string          `json:"extendData,omitempty"`
+	CloudInited              bool            `json:"cloudInited,omitempty"`
 }
 
 type VMPageResponse struct {

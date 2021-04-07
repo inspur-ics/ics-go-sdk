@@ -68,6 +68,11 @@ func (v *VirtualMachineService) ShutdownVM(ctx context.Context, id string) (*typ
 	return task, err
 }
 
+func (v *VirtualMachineService) RestartVM(ctx context.Context, id string) (*types.Task, error) {
+	task, err := methods.RestartVMById(ctx, v.RestAPITripper, id)
+	return task, err
+}
+
 func (v *VirtualMachineService) DeleteVM(ctx context.Context, id string, deleteFile bool, removeData bool) (*types.Task, error) {
 	task, err := methods.DeleteVMById(ctx, v.RestAPITripper, id, deleteFile, removeData)
 	return task, err
