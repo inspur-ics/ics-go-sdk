@@ -2,6 +2,7 @@ package volume
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	icsgo "github.com/inspur-ics/ics-go-sdk"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
@@ -60,6 +61,7 @@ func TestGetVolumesInDatastore(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 }
+
 func TestGetVolumeInfoById(t *testing.T) {
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
@@ -79,6 +81,7 @@ func TestGetVolumeInfoById(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 }
+
 func TestDeleteVolume(t *testing.T) {
 	fmt.Println("********************TestDeleteVolume**************")
 	if volumeid != "" {
@@ -88,5 +91,40 @@ func TestDeleteVolume(t *testing.T) {
 		} else {
 			fmt.Println(err.Error())
 		}
+	}
+}
+
+func TestSetVolume(t *testing.T) {
+	fmt.Println("********************TestSetVolume**************")
+
+	icsConnection = icsgo.ICSConnection{
+		Username: "admin",
+		Password: "Cloud@s1",
+		Hostname: "10.48.50.13",
+		Port:     "443",
+		Insecure: true,
+	}
+	ctx = context.Background()
+	icsConnection.Connect(ctx)
+	volumeId := "8ab0b28d7867fb1d0178687e6c13006a"
+	volumeClient = NewVolumeService(icsConnection.Client)
+	volumeInfo, err := volumeClient.GetVolumeInfoById(ctx, volumeId)
+	if err != nil {
+		t.Fatalf("Failed to get volume info. Error: %v", err)
+	}
+
+	volumeInfo.Size += 5
+	task, err := volumeClient.SetVolume(ctx, volumeId, volumeInfo)
+	if err != nil {
+		t.Fatalf("Failed to set volume. Error: %v", err)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := volumeClient.TraceTaskProcess(&task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
 	}
 }
