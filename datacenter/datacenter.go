@@ -11,6 +11,11 @@ func (d *DatacenterService) GetDatacenter(ctx context.Context, datacenterid stri
 	return dc, err
 }
 
+func (d *DatacenterService) GetDatacenterByName(ctx context.Context, datacenterName string) (*types.Datacenter, error) {
+	dc, err := methods.GetDatacenterByName(ctx, d.RestAPITripper, datacenterName)
+	return dc, err
+}
+
 func (d *DatacenterService) GetAllDatacenters(ctx context.Context) ([]*types.Datacenter, error) {
 	var dclist []*types.Datacenter
 	datacenters, err := methods.GetAllDatacenterList(ctx, d.RestAPITripper)
