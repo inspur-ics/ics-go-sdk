@@ -177,7 +177,7 @@ type VirtualMachine struct {
 	Usb                      interface{}     `json:"usb"`
 	Usbs                     []interface{}   `json:"usbs"`
 	Cdrom                    Cdrom           `json:"cdrom"`
-	Floppy                   Floppy          `json:"floppy"`
+	Floppy                   interface{}     `json:"floppy"`
 	Disks                    []Disk          `json:"disks"`
 	Nics                     []Nic           `json:"nics"`
 	Gpus                     []interface{}   `json:"gpus"`
