@@ -47,6 +47,7 @@ type VolumeReq struct {
 	Description   string `json:"description"`
 	Bootable      bool   `json:"bootable"`
 	Shared        bool   `json:"shared"`
+	Format        string `json:"format"`
 }
 
 type VolumeListRsp struct {
