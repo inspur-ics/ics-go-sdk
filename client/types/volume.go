@@ -36,6 +36,7 @@ type Volume struct {
 	RelatedVms         interface{} `json:"relatedVms"`
 	ClusterSize        int         `json:"clusterSize"`
 	ScsiID             string      `json:"scsiId"`
+	Usage              string      `json:"usage"`
 }
 
 type VolumeReq struct {
@@ -48,6 +49,7 @@ type VolumeReq struct {
 	Bootable      bool   `json:"bootable"`
 	Shared        bool   `json:"shared"`
 	Format        string `json:"format"`
+	Usage         string `json:"usage"`
 }
 
 type VolumeListRsp struct {
