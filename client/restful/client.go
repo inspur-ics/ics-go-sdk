@@ -93,7 +93,7 @@ func NewClient(u *url.URL, insecure bool) *Client {
 
     c.HttpClient.SetHeader("Content-Type", "application/json; charset=utf-8").
         SetHeader("Accept", "application/json; charset=utf-8").
-        SetHeader("version", "5.6")
+        SetHeader("version", "5.8")
 
     c.HttpClient.SetTLSClientConfig(&tls.Config{ InsecureSkipVerify: insecure })
 

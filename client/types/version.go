@@ -3,5 +3,5 @@ package types
 const (
 	// ics api version
 	// before an error is returned.
-	ApiVersion string = "5.6.3"
+	ApiVersion string = "5.8"
 )

@@ -9,7 +9,7 @@ import (
 
 const (
     Namespace = "client"
-    Version   = "5.6.3"
+    Version   = "5.8"
     Path      = "/"
 )
 
