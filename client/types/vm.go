@@ -174,13 +174,13 @@ type VirtualMachine struct {
 	BootMode                 string          `json:"bootMode"`
 	SplashTime               int             `json:"splashTime"`
 	StoragePriority          int             `json:"storagePriority"`
-	Usb                      interface{}     `json:"usb"`
-	Usbs                     []interface{}   `json:"usbs"`
-	Cdrom                    Cdrom           `json:"cdrom"`
-	Floppy                   interface{}     `json:"floppy"`
+	Usb                      interface{}     `json:"usb,omitempty"`
+	Usbs                     []interface{}   `json:"usbs,omitempty"`
+	Cdrom                    Cdrom           `json:"cdrom,omitempty"`
+	Floppy                   interface{}     `json:"floppy,omitempty"`
 	Disks                    []Disk          `json:"disks"`
 	Nics                     []Nic           `json:"nics"`
-	Gpus                     []interface{}   `json:"gpus"`
+	Gpus                     []interface{}   `json:"gpus,omitempty"`
 	VMPcis                   []interface{}   `json:"vmPcis"`
 	ConfigLocation           string          `json:"configLocation"`
 	HotplugEnabled           bool            `json:"hotplugEnabled"`
