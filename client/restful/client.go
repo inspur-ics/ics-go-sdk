@@ -44,6 +44,8 @@ type Client struct {
     Version   string //  ics api version
 
     Authorization    string
+    AccessKeyID      string
+    AccessKeySecret  string
 }
 
 var schemeMatch = regexp.MustCompile(`^\w+://`)
@@ -121,12 +123,21 @@ func (c *Client) SetToken(token string) {
     c.Authorization = token
 }
 
+func (c *Client) GetAccessKey() string {
+    return fmt.Sprintf("ICS %s:%s", c.AccessKeyID, c.AccessKeySecret)
+}
+
+func (c *Client) SetAccessKey(keyID string, keySecret string) {
+    c.AccessKeyID = keyID
+    c.AccessKeySecret = keySecret
+}
+
 func (c *Client) generateRequest(api types.ICSApi) *resty.Request {
     client := c.HttpClient
     request := client.R()
     if api.Token {
         if len(c.GetToken()) == 0 {
-            request.SetHeader("Authorization", "anonymous")
+            request.SetHeader("Authorization", c.GetAccessKey())
         } else {
             request.SetHeader("Authorization", c.GetToken())
         }
