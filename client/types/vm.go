@@ -1,7 +1,7 @@
 package types
 
 type Disk struct {
-	ID              string  `json:"id"`
+	ID              string  `json:"id,omitempty"`
 	Label           string  `json:"label"`
 	ScsiID          string  `json:"scsiId"`
 	Enabled         bool    `json:"enabled"`
