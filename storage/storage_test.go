@@ -13,8 +13,8 @@ var (
 	storageClient *StorageService
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin@inspur",
-		Hostname: "10.7.11.90",
+		Password: "admin",
+		Hostname: "10.10.10.22",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -61,12 +61,20 @@ func TestStorageInfoByName(t *testing.T) {
 
 func TestStorageInfoById(t *testing.T) {
 	fmt.Println("********************TestStorageInfoById**************")
-	storageinfo, err := storageClient.GetStorageInfoById(ctx, "8a878bda6f6f3ca4016f6f458b50003c")
-	if storageinfo != nil {
+	ctx = context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+	storageClient = NewStorageService(icsConnection.Client)
+	storageinfo, err := storageClient.GetStorageInfoById(ctx, "8ab1a2968205c11601825d5599e615f7")
+	if err != nil {
+		fmt.Println(err.Error())
+		t.Fatal("Get storage info failed!")
+	} else {
 		fmt.Println(storageinfo.Name)
 		fmt.Println(storageinfo.MountPath)
-	} else {
-		fmt.Println(err.Error())
+		fmt.Println(storageinfo.AllocPolicy)
 	}
 }
 

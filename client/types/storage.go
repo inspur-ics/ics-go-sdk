@@ -9,25 +9,25 @@ type Storage struct {
 	UsedCapacity        float64 `json:"usedCapacity"`
 	AvailCapacity       float64 `json:"availCapacity"`
 	DataCenterID        string  `json:"dataCenterId"`
-	HostID              string  `json:"hostId"`
-	MountStatus         string  `json:"mountStatus"`
-	HostIP              string  `json:"hostIp"`
+	HostID              string  `json:"hostId,omitempty"`
+	MountStatus         string  `json:"mountStatus,omitempty"`
+	HostIP              string  `json:"hostIp,omitempty"`
 	UUID                string  `json:"uuid"`
-	AbsolutePath        string  `json:"absolutePath"`
-	DataCenterName      string  `json:"dataCenterName"`
+	AbsolutePath        string  `json:"absolutePath,omitempty"`
+	DataCenterName      string  `json:"dataCenterName,omitempty"`
 	DataCenterOrHostDto struct {
 		DataCenterOrHost string `json:"dataCenterOrHost"`
-		DataCenterName   string `json:"dataCenterName"`
-		HostName         string `json:"hostName"`
-		Status           string `json:"status"`
+		DataCenterName   string `json:"dataCenterName,omitempty"`
+		HostName         string `json:"hostName,omitempty"`
+		Status           string `json:"status,omitempty"`
 	} `json:"dataCenterOrHostDto"`
-	BlockDeviceDto    interface{} `json:"blockDeviceDto"`
-	DataCenterDto     interface{} `json:"dataCenterDto"`
+	BlockDeviceDto    interface{} `json:"blockDeviceDto,omitempty"`
+	DataCenterDto     interface{} `json:"dataCenterDto,omitempty"`
 	HostNumbers       int         `json:"hostNumbers"`
 	VMNumbers         int         `json:"vmNumbers"`
 	VolumesNumbers    int         `json:"volumesNumbers"`
 	VMTemplateNumbers int         `json:"vmTemplateNumbers"`
-	Tags              string      `json:"tags"`
+	Tags              interface{} `json:"tags,omitempty"`
 	MaxSlots          int         `json:"maxSlots"`
 	Creating          bool        `json:"creating"`
 	StorageBackUp     bool        `json:"storageBackUp"`
@@ -36,13 +36,11 @@ type Storage struct {
 	MultiplexRatio    float64     `json:"multiplexRatio"`
 	Oplimit           bool        `json:"oplimit"`
 	Maxop             int         `json:"maxop"`
-	MountStateCount   string      `json:"mountStateCount"`
-	BlockDeviceUUID   string      `json:"blockDeviceUuid"`
-	OpHostIP          string      `json:"opHostIp"`
-	IsMount           string      `json:"isMount"`
-	HostDto           string      `json:"hostDto"`
+	MountStateCount   interface{} `json:"mountStateCount"`
 	ScvmOn            bool        `json:"scvmOn"`
+	AllocPolicy       string      `json:"allocPolicy,omitempty"`
 }
+
 type StoragePageResponse struct {
 	PageResponse
 	Items []Storage `json:"items"`
