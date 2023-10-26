@@ -12,7 +12,6 @@ func (v *VirtualMachineService) GetVM(ctx context.Context, id string) (*types.Vi
 }
 
 func (v *VirtualMachineService) SetVM(ctx context.Context, vmInfo types.VirtualMachine) (*types.Task, error) {
-	vmInfo.VncPasswd = "12345678"
 	task, err := methods.SetVM(ctx, v.RestAPITripper, vmInfo)
 	return task, err
 }
