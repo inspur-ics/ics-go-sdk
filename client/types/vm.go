@@ -164,6 +164,7 @@ type VirtualMachine struct {
 	Memory                   int             `json:"memory"`
 	MemoryUsage              float64         `json:"memoryUsage"`
 	MemHotplugEnabled        bool            `json:"memHotplugEnabled"`
+	MemHotplugNumaEnabled    bool            `json:"memHotplugNumaEnabled"`
 	EnableHugeMemPage        bool            `json:"enableHugeMemPage"`
 	CPUNum                   int             `json:"cpuNum"`
 	CPUSocket                int             `json:"cpuSocket"`
