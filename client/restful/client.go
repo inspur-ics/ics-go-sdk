@@ -6,13 +6,13 @@ import (
 
     "context"
     "crypto/tls"
-    "github.com/inspur-ics/ics-go-sdk/client/types"
     "net/url"
     "regexp"
     "sync"
     "time"
 
-    "github.com/go-resty/resty"
+    "github.com/inspur-ics/ics-go-sdk/client/types"
+    "github.com/go-resty/resty/v2"
     "k8s.io/klog"
 )
 
