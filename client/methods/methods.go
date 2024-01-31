@@ -176,3 +176,42 @@ func GetTaskInfo(ctx context.Context, r restful.RestAPITripper, req *types.Task)
 
     return &response, err
 }
+
+func GetPublicKey(ctx context.Context, r restful.RestAPITripper) (string, error) {
+    var reqBody      *types.Common
+    var api          types.ICSApi
+    var publicKey    string
+
+    api.Api = "/system/publickey"
+    api.Token = true
+
+    resp, err := r.GetTrip(ctx, api, reqBody)
+    respBody, err := HandleResponse(resp, err)
+    if err != nil {
+        publicKey = ""
+    } else {
+        publicKey = string(respBody)
+    }
+
+    return publicKey, err
+}
+
+func GetLoginPolicy(ctx context.Context, r restful.RestAPITripper) (*types.LoginPolicy, error) {
+    var reqBody      *types.Common
+    var api          types.ICSApi
+    var response = types.LoginPolicy{}
+
+    api.Api = "/system/loginpolicy"
+    api.Token = true
+
+    resp, err := r.GetTrip(ctx, api, reqBody)
+    respBody, err1 := HandleResponse(resp, err)
+    if err1 != nil {
+        err = err1
+    } else if respBody != nil {
+        jsonErr := json.Unmarshal([]byte(respBody), &response)
+        err = JsonError(jsonErr)
+    }
+
+    return &response, err
+}

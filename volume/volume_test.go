@@ -112,12 +112,39 @@ func TestGetVolumeInfoById(t *testing.T) {
 
 func TestDeleteVolume(t *testing.T) {
 	fmt.Println("********************TestDeleteVolume**************")
-	if volumeid != "" {
-		task, err := volumeClient.DeleteVolume(ctx, volumeid, true)
-		if err == nil {
-			fmt.Println(task.TaskId)
+	icsConnection = icsgo.ICSConnection{
+		Username: "admin",
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
+		Port:     "443",
+		Insecure: true,
+	}
+	ctx = context.Background()
+	icsConnection.Connect(ctx)
+	volumeClient = NewVolumeService(icsConnection.Client)
+	isNeedAuth, err := volumeClient.IsDeleteNeedIdentityAuth(ctx)
+	if err != nil {
+		t.Fatalf("Failed to get login policy. Error: %v", err)
+	}
+
+	var task types.Task
+	volumeid = "8ab1a2218d55e067018d6029e1720072"
+	if !isNeedAuth {
+		task, err = volumeClient.DeleteVolume(ctx, volumeid, true)
+	} else {
+		task, err = volumeClient.DeleteVolumeWithCheckParams(ctx, volumeid, true, icsConnection.Password)
+	}
+
+	if err != nil {
+		t.Fatalf("Failed to delete volume. Error: %v", err)
+	} else {
+		t.Logf("Waiting task %v finish.....\n", task.TaskId)
+		taskInfo, err := volumeClient.TraceTaskProcess(&task)
+		if err != nil {
+			t.Fatalf("Failed to trace task. Error: %v", err)
 		} else {
-			fmt.Println(err.Error())
+			taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+			t.Logf("Task Status: %v\n", string(taskJson))
 		}
 	}
 }

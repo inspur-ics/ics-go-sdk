@@ -43,6 +43,10 @@ type ICSApi struct {
     Token  bool          `json:"token"`
 }
 
+type LoginPolicy struct {
+    Enable string `json:"enable"`
+}
+
 // ICS LOGIN FORM
 type Login struct {
     Username         string        `json:"username"`

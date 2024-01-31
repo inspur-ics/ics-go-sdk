@@ -46,6 +46,7 @@ type Client struct {
     Authorization    string
     AccessKeyID      string
     AccessKeySecret  string
+    CheckParams      string
 }
 
 var schemeMatch = regexp.MustCompile(`^\w+://`)
@@ -132,6 +133,10 @@ func (c *Client) SetAccessKey(keyID string, keySecret string) {
     c.AccessKeySecret = keySecret
 }
 
+func (c *Client) SetCheckParams(checkParams string) {
+    c.CheckParams = checkParams
+}
+
 func (c *Client) generateRequest(api types.ICSApi) *resty.Request {
     client := c.HttpClient
     request := client.R()
@@ -141,6 +146,9 @@ func (c *Client) generateRequest(api types.ICSApi) *resty.Request {
         } else {
             request.SetHeader("Authorization", c.GetToken())
         }
+    }
+    if c.CheckParams != "" {
+        request.SetHeader("CheckParams", c.CheckParams)
     }
     return request
 }
