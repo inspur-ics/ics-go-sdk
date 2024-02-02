@@ -118,7 +118,7 @@ func Login(ctx context.Context, r restful.RestAPITripper, req *types.Login) (*ty
     var response = types.LoginResponse{}
 
     reqBody = req
-    api.Api = "/authentication"
+    api.Api = "/system/user/sdklogin"
     api.Token = false
 
     resp, err := r.PostTrip(ctx, api, reqBody)
