@@ -2,6 +2,7 @@ package vm
 
 import (
 	"context"
+	"github.com/inspur-ics/ics-go-sdk/client"
 	"github.com/inspur-ics/ics-go-sdk/client/methods"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
 )
@@ -75,6 +76,20 @@ func (v *VirtualMachineService) RestartVM(ctx context.Context, id string) (*type
 func (v *VirtualMachineService) DeleteVM(ctx context.Context, id string, deleteFile bool, removeData bool) (*types.Task, error) {
 	task, err := methods.DeleteVMById(ctx, v.RestAPITripper, id, deleteFile, removeData)
 	return task, err
+}
+
+func (v *VirtualMachineService) DeleteVMWithCheckParams(ctx context.Context, id string, deleteFile bool, removeData bool,
+	passwd string) (*types.Task, error) {
+	checkParams, err := methods.GenerateCheckParams(ctx, v.RestAPITripper, passwd)
+	if err != nil {
+		return nil, err
+	}
+
+	restClient := v.RestAPITripper.(*client.Client)
+	restClient.SetCheckParams(checkParams)
+	defer restClient.SetCheckParams("")
+
+	return v.DeleteVM(ctx, id, deleteFile, removeData)
 }
 
 func (v *VirtualMachineService) CreateVMByTemplate(ctx context.Context, vmSpec types.VirtualMachine, quickClone bool) (*types.Task, error) {

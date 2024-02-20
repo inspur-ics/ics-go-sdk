@@ -2,6 +2,7 @@ package common
 
 import (
 	"context"
+	"fmt"
 	"github.com/inspur-ics/ics-go-sdk/client/methods"
 	"github.com/inspur-ics/ics-go-sdk/client/restful"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
@@ -48,4 +49,16 @@ func (r *RestAPI) tracing(task *types.Task, wg *sync.WaitGroup) {
 		time.Sleep(100 * time.Millisecond)
 		count++
 	}
+}
+
+func (r *RestAPI) IsDeleteNeedIdentityAuth(ctx context.Context) (bool, error) {
+	loginPolicy, err := methods.GetLoginPolicy(ctx, r.RestAPITripper)
+	if err != nil {
+		return false, fmt.Errorf("Failed to get login policy. Err: %v", err)
+	}
+
+	if loginPolicy.Enable == "1" {
+		return true, nil
+	}
+	return false, nil
 }

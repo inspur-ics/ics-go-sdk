@@ -3,6 +3,7 @@ package vapp
 import (
 	"context"
 	"fmt"
+	"github.com/inspur-ics/ics-go-sdk/client"
 	"github.com/inspur-ics/ics-go-sdk/client/methods"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
 )
@@ -33,6 +34,19 @@ func (v *VappService) CreateVapp(ctx context.Context, req types.VappCreateReq) (
 func (v *VappService) DeleteVapp(ctx context.Context, vappID string) (types.Task, error) {
 	task, err := methods.DeleteVapp(ctx, v.RestAPITripper, vappID)
 	return task, err
+}
+
+func (v *VappService) DeleteVappWithCheckParams(ctx context.Context, vappID string, passwd string) (types.Task, error) {
+	checkParams, err := methods.GenerateCheckParams(ctx, v.RestAPITripper, passwd)
+	if err != nil {
+		return types.Task{}, err
+	}
+
+	restClient := v.RestAPITripper.(*client.Client)
+	restClient.SetCheckParams(checkParams)
+	defer restClient.SetCheckParams("")
+
+	return v.DeleteVapp(ctx, vappID)
 }
 
 func (v *VappService) AddVmToVapp(ctx context.Context, vappID string, vmID []string) (types.Task, error) {

@@ -128,7 +128,7 @@ func TestDeleteVolume(t *testing.T) {
 	}
 
 	var task types.Task
-	volumeid = "8ab1a2218d55e067018d6029e1720072"
+	volumeid = "8ab1a2218dc239da018dc25772a00021"
 	if !isNeedAuth {
 		task, err = volumeClient.DeleteVolume(ctx, volumeid, true)
 	} else {

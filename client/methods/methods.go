@@ -2,6 +2,10 @@ package methods
 
 import (
     "context"
+    "crypto/rand"
+    "crypto/rsa"
+    "crypto/x509"
+    "encoding/base64"
     "encoding/json"
     "fmt"
     "strconv"
@@ -214,4 +218,28 @@ func GetLoginPolicy(ctx context.Context, r restful.RestAPITripper) (*types.Login
     }
 
     return &response, err
+}
+
+func GenerateCheckParams(ctx context.Context, r restful.RestAPITripper, params string) (string, error) {
+    publicKey, err := GetPublicKey(ctx, r)
+    if err != nil {
+        return "", fmt.Errorf("Failed to get public key. Err: %v", err)
+    }
+
+    decPublicKey, err := base64.StdEncoding.DecodeString(publicKey)
+    if err != nil {
+        return "", fmt.Errorf("Failed to decode public key. Err: %v", err)
+    }
+
+    pubInterface, err := x509.ParsePKIXPublicKey(decPublicKey)
+    if err != nil {
+        return "", fmt.Errorf("Failed to parse public key. Err: %v", err)
+    }
+    pub := pubInterface.(*rsa.PublicKey)
+    encParams, err := rsa.EncryptPKCS1v15(rand.Reader, pub, []byte(params))
+    if err != nil {
+        return "", fmt.Errorf("Failed to encrypt params %q. Err: %v", params, err)
+    }
+
+    return base64.StdEncoding.EncodeToString(encParams), nil
 }

@@ -74,15 +74,3 @@ func (vs *VolumeService) GetVolumesInDatastore(ctx context.Context, storeid stri
 	volumes, err := methods.GetVolumesInDatastore(ctx, vs.RestAPITripper, storeid)
 	return volumes.Items, err
 }
-
-func (vs *VolumeService) IsDeleteNeedIdentityAuth(ctx context.Context) (bool, error) {
-	loginPolicy, err := methods.GetLoginPolicy(ctx, vs.RestAPITripper)
-	if err != nil {
-		return false, fmt.Errorf("Failed to get login policy. Err: %v", err)
-	}
-
-	if loginPolicy.Enable == "1" {
-		return true, nil
-	}
-	return false, nil
-}

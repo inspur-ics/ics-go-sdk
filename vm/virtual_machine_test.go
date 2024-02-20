@@ -12,8 +12,8 @@ import (
 var (
 	icsConnection = &icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin@inspur", // "Cloud@s1"
-		Hostname: "10.7.11.90",   // "10.48.50.13"
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -258,17 +258,25 @@ func TestRestartVM(t *testing.T) {
 }
 
 func TestDeleteVM(t *testing.T) {
+	var task *types.Task
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
 		t.Fatal("Create ics connection error!")
 	}
 
-	vmId := "8ab0b28d77be994a01780f7372a60f07"
+	vmId := "8ab1a2218dc27ce1018dc6e0a218004f"
 	deleteFile := true
 	removeData := true
+
 	vmClient := NewVirtualMachineService(icsConnection.Client)
-	task, err := vmClient.DeleteVM(ctx, vmId, deleteFile, removeData)
+	needAuth, err := vmClient.IsDeleteNeedIdentityAuth(ctx)
+	if needAuth {
+		t.Logf("Delete VM %s with check params", vmId)
+		task, err = vmClient.DeleteVMWithCheckParams(ctx, vmId, deleteFile, removeData, icsConnection.Password)
+	} else {
+		task, err = vmClient.DeleteVM(ctx, vmId, deleteFile, removeData)
+	}
 	if err != nil {
 		t.Fatalf("Failed to delete vm. Error: %v", err)
 	} else {

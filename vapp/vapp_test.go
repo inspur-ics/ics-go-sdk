@@ -12,8 +12,8 @@ import (
 var (
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin@inspur",
-		Hostname: "10.7.11.90",
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -78,20 +78,33 @@ func TestCreateVapp(t *testing.T) {
 }
 
 func TestDeleteVapp(t *testing.T) {
+	var task types.Task
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
 		t.Fatal("Create ics connection error!")
 	}
 
-	vappID := "8a878bda781f145e017849e3a1b701e6"
+	vappID := "8ab1a2218dc239da018dc267a5970047"
 	vappClient := NewVappService(icsConnection.Client)
-	task, err := vappClient.DeleteVapp(ctx, vappID)
+	needAuth, err := vappClient.IsDeleteNeedIdentityAuth(ctx)
+	if needAuth {
+		t.Logf("Delete vapp %s with check params", vappID)
+		task, err = vappClient.DeleteVappWithCheckParams(ctx, vappID, icsConnection.Password)
+	} else {
+		task, err = vappClient.DeleteVapp(ctx, vappID)
+	}
 	if err != nil {
 		t.Errorf("Failed to delete vapp. Error: %v\n", err)
 	} else {
-		taskJson, _ := json.MarshalIndent(task, "", "\t")
-		t.Logf("taskInfo: %v\n", string(taskJson))
+		t.Logf("Waiting task %v finish.....\n", task.TaskId)
+		taskInfo, err := vappClient.TraceTaskProcess(&task)
+		if err != nil {
+			t.Fatalf("Failed to trace task. Error: %v", err)
+		} else {
+			taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+			t.Logf("Task Status: %v\n", string(taskJson))
+		}
 	}
 }
 
