@@ -126,3 +126,22 @@ func TestGetImageFileList(t *testing.T) {
 		}
 	}
 }
+
+func TestGetImageFileInfoByName(t *testing.T) {
+	fmt.Println("********************TestGetImageFileInfoByName**************")
+	ctx = context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	imageName := "rh7.6_x86_mini.ova"
+	storageClient = NewStorageService(icsConnection.Client)
+	imageInfo, err := storageClient.GetImageFileInfoByName(ctx, imageName)
+	if err != nil {
+		t.Errorf("Failed to get image file info. Error: %v", err)
+	} else {
+		t.Logf("Image Name:%s", imageInfo.Name)
+		t.Logf("Image Path:%s", imageInfo.Path)
+	}
+}

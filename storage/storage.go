@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"fmt"
 	"github.com/inspur-ics/ics-go-sdk/client/methods"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
 )
@@ -46,4 +47,23 @@ func (sts *StorageService) GetStoragePageList(req *types.StoragePageReq) (*types
 func (sts *StorageService) GetImageFileList(ctx context.Context, storageId string) ([]types.ImageFileInfo, error) {
 	imageList, err := methods.GetImageFileList(ctx, sts.RestAPITripper, storageId)
 	return imageList.Items, err
+}
+
+func (sts *StorageService) GetImageFileInfoByName(ctx context.Context, imageName string) (*types.ImageFileInfo, error) {
+	storagePages, err := methods.GetImageStorageList(ctx, sts.RestAPITripper)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, storageInfo := range storagePages.Items {
+		imageList, err := sts.GetImageFileList(ctx, storageInfo.ID)
+		if err == nil && len(imageList) > 0 {
+			for _, imageInfo := range imageList {
+				if imageInfo.Name == imageName {
+					return &imageInfo, nil
+				}
+			}
+		}
+	}
+	return nil, fmt.Errorf("Image %s not found", imageName)
 }

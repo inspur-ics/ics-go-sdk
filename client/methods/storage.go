@@ -69,6 +69,26 @@ func GetStorageList(ctx context.Context, r restful.RestAPITripper) (*types.Stora
 	return &response, err
 }
 
+func GetImageStorageList(ctx context.Context, r restful.RestAPITripper) (*types.StoragePageResponse, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.StoragePageResponse{}
+
+	api.Api = "/storages?extype=IMAGE_STORAGE"
+	api.Token = true
+
+	resp, err := r.GetTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
 func GetImageFileList(ctx context.Context, r restful.RestAPITripper, storageId string) (*types.ImageFilePageResponse, error) {
 	var reqBody *types.Common
 	var api types.ICSApi
