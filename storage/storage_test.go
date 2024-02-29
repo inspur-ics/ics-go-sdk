@@ -13,8 +13,8 @@ var (
 	storageClient *StorageService
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin",
-		Hostname: "10.10.10.22",
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -103,5 +103,26 @@ func TestStoragePageList(t *testing.T) {
 		}
 	} else {
 		fmt.Println(err.Error())
+	}
+}
+
+func TestGetImageFileList(t *testing.T) {
+	fmt.Println("********************TestGetImageFileList**************")
+	ctx = context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	imageDatastoreId := "8ab1a2218dca60bc018dca6361be0016"
+	storageClient = NewStorageService(icsConnection.Client)
+	imageList, err := storageClient.GetImageFileList(ctx, imageDatastoreId)
+	if err != nil {
+		t.Errorf("Failed to get image file list. Error: %v", err)
+	} else {
+		for _, imageInfo := range imageList {
+			t.Logf("Image Name:%s", imageInfo.Name)
+			t.Logf("Image Path:%s", imageInfo.Path)
+		}
 	}
 }

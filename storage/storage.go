@@ -42,3 +42,8 @@ func (sts *StorageService) GetStoragePageList(req *types.StoragePageReq) (*types
 	storagePages, err := methods.GetStoragePageList(ctx, sts.RestAPITripper, req)
 	return storagePages, err
 }
+
+func (sts *StorageService) GetImageFileList(ctx context.Context, storageId string) ([]types.ImageFileInfo, error) {
+	imageList, err := methods.GetImageFileList(ctx, sts.RestAPITripper, storageId)
+	return imageList.Items, err
+}

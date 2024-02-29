@@ -437,3 +437,82 @@ func TestGetVMNetState(t *testing.T) {
 		}
 	}
 }
+
+func TestGetOvaConfig(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	ovaFilePath := "/datastore/2afee96f-4242-4841-926d-e2553b1a3ca5/vm_rh7.6min.ova"
+	hostUUID := "56c940ba-f62d-423f-aaf3-f91dfc22d7ea"
+	imageHostUUID := "56c940ba-f62d-423f-aaf3-f91dfc22d7ea"
+	ovaConfig, err := vmClient.GetOvaConfig(ctx, ovaFilePath, hostUUID, imageHostUUID)
+	if err != nil {
+		t.Errorf("Failed to get ova config info. Error: %v", err)
+	} else {
+		ovaConfigJson, _ := json.MarshalIndent(ovaConfig, "", "\t")
+		t.Logf("VM Info: %s\n", string(ovaConfigJson))
+	}
+}
+
+func TestImportVM(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	vmClient := NewVirtualMachineService(icsConnection.Client)
+	ovaFilePath := "/datastore/2afee96f-4242-4841-926d-e2553b1a3ca5/VMTemp.ova"
+	hostUUID := "56c940ba-f62d-423f-aaf3-f91dfc22d7ea"
+	imageHostUUID := "56c940ba-f62d-423f-aaf3-f91dfc22d7ea"
+	vmConfig, err := vmClient.GetOvaConfig(ctx, ovaFilePath, hostUUID, imageHostUUID)
+	if err != nil {
+		t.Fatalf("Failed to get ova config info. Error: %v", err)
+	}
+
+	cloudConfig := `
+#cloud-config
+write_files:
+- encoding: b64
+  content: IyBteSBuYW1lIGlzIGNsb3VkLWluaXQ=
+  owner: root:root
+  path: /etc/sysconfig/selinux
+  permissions: '0644'
+- content: |
+    # My new /etc/sysconfig/samba file
+
+    SMBDOPTIONS="-D"
+  path: /etc/sysconfig/samba`
+
+	vmConfig.Name = "vm_create_by_ova_004"
+	vmConfig.HostID = hostUUID
+	vmConfig.Template = false
+	vmConfig.CPUSocket = vmConfig.CPUNum / vmConfig.CPUCore
+	vmConfig.DataStoreID = "8ab1a2218d55e067018d55ec81d10042"
+	vmConfig.Disks[0].Volume.DataStoreID = "8ab1a2218d55e067018d55ec81d10042"
+	vmConfig.Nics[0].DeviceName = "manageNetwork0"
+	vmConfig.Nics[0].DeviceID = "8ab1a2218d55e067018d55e716d60039"
+	vmConfig.CloudInit = types.CloudInit{
+		UserData: cloudConfig,
+	}
+	task, err := vmClient.ImportVM(ctx, *vmConfig, ovaFilePath, imageHostUUID)
+	if err != nil {
+		t.Fatalf("Failed to import vm by ova. Error: %v", err)
+	} else {
+		t.Logf("Import VM Task: %+v\n", task)
+	}
+
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := vmClient.TraceTaskProcess(task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
+	}
+
+}

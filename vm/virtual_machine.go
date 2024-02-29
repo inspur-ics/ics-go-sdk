@@ -150,3 +150,15 @@ func (v *VirtualMachineService) GetVMNetState(ctx context.Context, id string) ([
 	nic := vm.Nics
 	return nic, err
 }
+
+func (v *VirtualMachineService) GetOvaConfig(ctx context.Context, ovaFilePath string, hostUUID string,
+	imageHostUUID string) (*types.VirtualMachine, error) {
+	ovaConfig, err := methods.GetOvaConfig(ctx, v.RestAPITripper, ovaFilePath, hostUUID, imageHostUUID)
+	return ovaConfig, err
+}
+
+func (v *VirtualMachineService) ImportVM(ctx context.Context, vmSpec types.VirtualMachine,
+	ovaFilePath string, hostUUID string) (*types.Task, error) {
+	task, err := methods.ImportVM(ctx, v.RestAPITripper, vmSpec, ovaFilePath, hostUUID)
+	return task, err
+}

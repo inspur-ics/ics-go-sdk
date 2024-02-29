@@ -129,6 +129,10 @@ type GuestOsInfo struct {
 	SupportUefiBootMode bool   `json:"supportUefiBootMode"`
 }
 
+type CloudInit struct {
+	UserData string `json:"userdata"`
+}
+
 type VirtualMachine struct {
 	ID                       string          `json:"id"`
 	CustomVmId               string          `json:"customVmId"`
@@ -182,6 +186,7 @@ type VirtualMachine struct {
 	Usb                      interface{}     `json:"usb,omitempty"`
 	Usbs                     []interface{}   `json:"usbs,omitempty"`
 	Cdrom                    Cdrom           `json:"cdrom,omitempty"`
+	CloudInit                CloudInit       `json:"cloudInit,omitempty"`
 	Floppy                   interface{}     `json:"floppy,omitempty"`
 	Disks                    []Disk          `json:"disks"`
 	Nics                     []Nic           `json:"nics"`

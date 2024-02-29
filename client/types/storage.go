@@ -49,3 +49,24 @@ type StoragePageResponse struct {
 type StoragePageReq struct {
 	PageReq
 }
+
+type ImageFileInfo struct {
+	Name           string `json:"name"`
+	SourceType     string `json:"sourceType"`
+	Format         string `json:"format"`
+	FileType       string `json:"fileType"`
+	Date           string `json:"date"`
+	Path           string `json:"path"`
+	FtpServer      string `json:"ftpServer"`
+	DataStoreID    string `json:"dataStoreId"`
+	DataStoreName  string `json:"dataStoreName"`
+	ServerID       string `json:"serverId"`
+	Md5            string `json:"md5"`
+	FileSizeInByte int    `json:"fileSizeInByte"`
+	RealSizeInByte int    `json:"realSizeInByte"`
+}
+
+type ImageFilePageResponse struct {
+	PageResponse
+	Items []ImageFileInfo `json:"items"`
+}
