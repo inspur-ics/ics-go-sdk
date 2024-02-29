@@ -474,20 +474,31 @@ func TestImportVM(t *testing.T) {
 		t.Fatalf("Failed to get ova config info. Error: %v", err)
 	}
 
-	cloudConfig := `
+	metadata := `
+{
+    "hostname": "web06.cloud.org",
+    "launch_index": 0,
+    "name":"web06",
+    "uuid":"282181d8-4eea-4438-a928-5a7976283898"
+}
+`
+	userdata := `
 #cloud-config
 write_files:
-- encoding: b64
+- path: /etc/sysconfig/selinux
+  encoding: b64
   content: IyBteSBuYW1lIGlzIGNsb3VkLWluaXQ=
   owner: root:root
-  path: /etc/sysconfig/selinux
   permissions: '0644'
-- content: |
+- path: /etc/sysconfig/samba
+  content: |
     # My new /etc/sysconfig/samba file
-
     SMBDOPTIONS="-D"
-  path: /etc/sysconfig/samba`
-
+  path: /etc/sysconfig/samba
+runcmd:
+- echo "123456789" > /tmp/test_file
+- ip address show  > /tmp/ip_addr
+`
 	vmConfig.Name = "vm_create_by_ova_004"
 	vmConfig.HostID = hostUUID
 	vmConfig.Template = false
@@ -497,13 +508,15 @@ write_files:
 	vmConfig.Nics[0].DeviceName = "manageNetwork0"
 	vmConfig.Nics[0].DeviceID = "8ab1a2218d55e067018d55e716d60039"
 	vmConfig.CloudInit = types.CloudInit{
-		UserData: cloudConfig,
+		MetaData:       metadata,
+		UserData:       userdata,
+		DataSourceType: "OPENSTACK",
 	}
 	task, err := vmClient.ImportVM(ctx, *vmConfig, ovaFilePath, imageHostUUID)
 	if err != nil {
 		t.Fatalf("Failed to import vm by ova. Error: %v", err)
 	} else {
-		t.Logf("Import VM Task: %+v\n", task)
+		t.Logf("Import VM %s Task: %+v\n", vmConfig.Name, task)
 	}
 
 	t.Logf("Waiting task %v finish.....\n", task.TaskId)

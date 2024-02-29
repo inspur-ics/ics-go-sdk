@@ -130,7 +130,9 @@ type GuestOsInfo struct {
 }
 
 type CloudInit struct {
-	UserData string `json:"userdata"`
+	MetaData       string `json:"metadata"`
+	UserData       string `json:"userdata"`
+	DataSourceType string `json:"dataSourceType"`
 }
 
 type VirtualMachine struct {
