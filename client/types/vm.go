@@ -235,8 +235,6 @@ type VirtualMachine struct {
 	CdpInfo                  interface{}     `json:"cdpInfo"`
 	GuestOSAuthInfo          GuestOSAuthInfo `json:"guestOSAuthInfo"`
 	AwareNumaEnabled         bool            `json:"awareNumaEnabled"`
-	ExtendData               string          `json:"extendData,omitempty"`
-	CloudInited              bool            `json:"cloudInited,omitempty"`
 }
 
 type VMPageResponse struct {
