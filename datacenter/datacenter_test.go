@@ -11,8 +11,8 @@ import (
 func TestGetAllDatacenters(t *testing.T) {
 	icsConnection := &icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin@inspur",
-		Hostname: "10.7.11.90",
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -25,17 +25,23 @@ func TestGetAllDatacenters(t *testing.T) {
 	dataCenterSvc := NewDatacenterService(icsConnection.Client)
 
 	datacenterList, err := dataCenterSvc.GetAllDatacenters(ctx)
-	if datacenterList != nil {
+	if err != nil {
+		t.Errorf("Failed to get all datacenters. Error: %v", err)
 		fmt.Printf("%+v\n", datacenterList[0])
 		fmt.Println(datacenterList)
+	} else {
+		for _, datacenter := range datacenterList {
+			dcJson, _ := json.MarshalIndent(datacenter, "", "\t")
+			t.Logf("DatacenterInfo: %v", string(dcJson))
+		}
 	}
 }
 
 func TestGetDatacenterByName(t *testing.T) {
 	icsConnection := &icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin@inspur",
-		Hostname: "10.7.11.90",
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}

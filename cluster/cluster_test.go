@@ -11,8 +11,8 @@ import (
 var (
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin@inspur",
-		Hostname: "10.7.11.90",
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}
