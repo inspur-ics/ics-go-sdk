@@ -6,8 +6,11 @@ type Storage struct {
 	Name                string  `json:"name"`
 	MountPath           string  `json:"mountPath"`
 	Capacity            float64 `json:"capacity"`
+	CapacityInByte      int     `json:"capacityInByte,omitempty"`
 	UsedCapacity        float64 `json:"usedCapacity"`
+	UsedCapacityInByte  int     `json:"usedCapacityInByte,omitempty"`
 	AvailCapacity       float64 `json:"availCapacity"`
+	AvailCapacityInByte int     `json:"availCapacityInByte,omitempty"`
 	DataCenterID        string  `json:"dataCenterId"`
 	HostID              string  `json:"hostId,omitempty"`
 	MountStatus         string  `json:"mountStatus,omitempty"`
@@ -22,11 +25,15 @@ type Storage struct {
 		Status           string `json:"status,omitempty"`
 	} `json:"dataCenterOrHostDto"`
 	BlockDeviceDto    interface{} `json:"blockDeviceDto,omitempty"`
+	XactiveStoreName  string      `json:"xactiveStoreName,omitempty"`
+	XactiveStoreId    string      `json:"xactiveStoreId,omitempty"`
 	DataCenterDto     interface{} `json:"dataCenterDto,omitempty"`
 	HostNumbers       int         `json:"hostNumbers"`
+	PodHostNumbers    int         `json:"podHostNumbers"`
 	VMNumbers         int         `json:"vmNumbers"`
 	VolumesNumbers    int         `json:"volumesNumbers"`
 	VMTemplateNumbers int         `json:"vmTemplateNumbers"`
+	PodNumbers        int         `json:"podNumbers"`
 	Tags              interface{} `json:"tags,omitempty"`
 	MaxSlots          int         `json:"maxSlots"`
 	Creating          bool        `json:"creating"`
@@ -37,6 +44,28 @@ type Storage struct {
 	Oplimit           bool        `json:"oplimit"`
 	Maxop             int         `json:"maxop"`
 	MountStateCount   interface{} `json:"mountStateCount"`
+	DatastoreRole     interface{} `json:"datastoreRole"`
+	CanCreateXactive  bool        `json:"canCreateXactive"`
+	Accelerator       string      `json:"accelerator"`
+	IscsiServerId     string      `json:"iscsiServerId"`
+	CanUmount         bool        `json:"canUmount"`
+	Iops              float64     `json:"iops"`
+	Kbps              float64     `json:"kbps"`
+	MaxReadRate       int         `json:"maxReadRate"`
+	MaxWriteRate      int         `json:"maxWriteRate"`
+	DepthReadRate     int         `json:"depthReadRate"`
+	DepthWriteRate    int         `json:"depthWriteRate"`
+	ReadBandwidth     interface{} `json:"readBandwidth"`
+	WriteBandwidth    interface{} `json:"writeBandwidth"`
+	MaxReadDelay      float64     `json:"maxReadDelay"`
+	MaxWriteDelay     float64     `json:"maxWriteDelay"`
+	DepthReadDelay    float64     `json:"depthReadDelay"`
+	DepthWriteDelay   float64     `json:"depthWriteDelay"`
+	BlockDeviceUuid   string      `json:"blockDeviceUuid"`
+	OpHostIp          string      `json:"opHostIp"`
+	IsMount           bool        `json:"isMount"`
+	DetectIORate      interface{} `json:"detectIORate"`
+	HostDto           interface{} `json:"hostDto"`
 	ScvmOn            bool        `json:"scvmOn"`
 	AllocPolicy       string      `json:"allocPolicy,omitempty"`
 }

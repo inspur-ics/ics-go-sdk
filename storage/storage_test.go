@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	icsgo "github.com/inspur-ics/ics-go-sdk"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
@@ -31,13 +32,12 @@ func TestStorageList(t *testing.T) {
 	storageClient = NewStorageService(icsConnection.Client)
 	storagelist, err := storageClient.GetStoragesList(ctx)
 	if storagelist != nil {
-		for i := 0; i < len(storagelist); {
-			fmt.Println(storagelist[i].Name)
-			fmt.Println(storagelist[i].MountPath)
-			i++
+		for i := 0; i < len(storagelist); i++ {
+			storageJson, _ := json.MarshalIndent(storagelist[i], "", "\t")
+			t.Logf("Storage Info: %s\n", string(storageJson))
 		}
 	} else {
-		fmt.Println(err.Error())
+		t.Errorf("Failed to get storage list. Error: %v\n", err)
 	}
 }
 
