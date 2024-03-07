@@ -13,7 +13,7 @@ type Switch struct {
 	ResourceID       string      `json:"resourceId"`
 	ControllerIP     interface{} `json:"controllerIP"`
 	DataCenterDto    Datacenter  `json:"dataCenterDto"`
-	HostDtos         interface{} `json:"hostDtos"`
+	HostDtos         Host        `json:"hostDtos"`
 	SwitchType       string      `json:"switchType"`
 	AppType          string      `json:"appType"`
 	Description      string      `json:"description"`
@@ -24,7 +24,8 @@ type Switch struct {
 	PnicNum          int         `json:"pnicNum"`
 	NetworkNum       int         `json:"networkNum"`
 	VMNum            int         `json:"vmNum"`
-	Maxvfs           int         `json:"maxvfs"`
+	ProdNum          int         `json:"prodNum"`
+	MaxVfs           int         `json:"maxvfs"`
 	ThirdPartySDN    bool        `json:"thirdPartySDN"`
 	Hierarchy        bool        `json:"hierarchy"`
 	ConnectStorage   bool        `json:"connectStorage"`
@@ -37,6 +38,24 @@ type Switch struct {
 	SwitchUplinkType string      `json:"switchUplinkType"`
 	ComputerNetNum   int         `json:"computerNetNum"`
 	DataNetNum       int         `json:"dataNetNum"`
+	MigrateNetNum    int         `json:"migrateNetNum"`
+	VmMigBandWidth   string      `json:"vmMigBandWidth"`
+	EnableDpdk       bool        `json:"enableDpdk"`
+	SflowStatus      bool        `json:"sflowStatus"`
+	NetflowStatus    bool        `json:"netflowStatus"`
+	MulticastStatus  bool        `json:"multicastStatus"`
+	MirrorStatus     bool        `json:"mirrorStatus"`
+	BrLimitStatus    bool        `json:"brLimitStatus"`
+	Hidden           bool        `json:"hidden"`
+	NetworkTopoly    bool        `json:"networkTopoly"`
+	ArbitrativeIp    interface{} `json:"arbitrativeIp"`
+	HbAutoCreate     bool        `json:"hbAutoCreate"`
+	EnableFcoe       bool        `json:"enableFcoe"`
+	EnableSc         bool        `json:"enableSc"`
+	EnableTrust      bool        `json:"enableTrust"`
+	MTU              int         `json:"mtu"`
+	ConnectInCloudOs bool        `json:"connectInCloudOs"`
+	IamServerDto     interface{} `json:"iamServerDto"`
 }
 
 type Network struct {
@@ -45,16 +64,17 @@ type Network struct {
 	ResourceID      string        `json:"resourceId"`
 	Vlan            int           `json:"vlan"`
 	VlanFlag        bool          `json:"vlanFlag"`
-	Mtu             interface{}   `json:"mtu"`
+	Mtu             int           `json:"mtu"`
 	Type            string        `json:"type"`
 	VswitchDto      Switch        `json:"vswitchDto"`
+	PnicDto         interface{}   `json:"pnicDto"`
 	PortDtos        []interface{} `json:"portDtos"`
 	VMDtos          interface{}   `json:"vmDtos"`
 	VnicDtos        interface{}   `json:"vnicDtos"`
-	Vmcount         int           `json:"vmcount"`
-	Vniccount       int           `json:"vniccount"`
+	VmCount         int           `json:"vmcount"`
+	VnicCount       int           `json:"vniccount"`
 	ConnectMode     string        `json:"connectMode"`
-	Description     interface{}   `json:"description"`
+	Description     string        `json:"description"`
 	UplinkRate      int           `json:"uplinkRate"`
 	UplinkBurst     int           `json:"uplinkBurst"`
 	DownlinkRate    int           `json:"downlinkRate"`
@@ -64,7 +84,17 @@ type Network struct {
 	UserVlan        interface{}   `json:"userVlan"`
 	TpidType        interface{}   `json:"tpidType"`
 	PermitDel       bool          `json:"permitDel"`
-	Cidr            interface{}   `json:"cidr"`
-	Gateway         interface{}   `json:"gateway"`
+	Cidr            string        `json:"cidr"`
+	CidrType        int           `json:"cidrType"`
+	Gateway         string        `json:"gateway"`
 	DhcpEnabled     bool          `json:"dhcpEnabled"`
+	GatewayEnabled  bool          `json:"gatewayEnabled"`
+	DNS             string        `json:"dns"`
+	DataCenterDto   Datacenter    `json:"dataCenterDto"`
+	NetworkTopoly   bool          `json:"networkTopoly"`
+	UseTypes        string        `json:"useTypes"`
+	StartIp         string        `json:"startIp"`
+	EndIp           string        `json:"endIp"`
+	Pools           []interface{} `json:"pools"`
+	UsedByHbLink    bool          `json:"usedByHbLink"`
 }

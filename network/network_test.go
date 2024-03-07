@@ -11,8 +11,8 @@ import (
 var (
 	icsConnection = &icsgo.ICSConnection{
 		Username: "admin",
-		Password: "admin@inspur", // "Cloud@s1"
-		Hostname: "10.7.11.90",   // "10.48.50.13"
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -49,8 +49,8 @@ func TestGetNetworkList(t *testing.T) {
 		t.Errorf("Failed to get network list. Error: %v\n", err)
 	} else {
 		for _, network := range networkList {
-			t.Logf("Network Name: %s\n", network.Name)
-			t.Logf("Network ID: %s\n", network.ID)
+			networkJson, _ := json.MarshalIndent(network, "", "\t")
+			t.Logf("Network Info: %s\n", string(networkJson))
 		}
 	}
 }

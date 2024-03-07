@@ -6,6 +6,7 @@ type Vapp struct {
 	Name           string         `json:"name"`
 	CpuCount       string         `json:"cpucount"`
 	Memory         string         `json:"memory"`
+	MemoryInByte   int            `json:"memoryInByte,omitempty"`
 	ActiveVMCount  string         `json:"activevircount"`
 	VMCount        string         `json:"vircount"`
 	State          string         `json:"state"`
@@ -19,6 +20,9 @@ type Vapp struct {
 	DataCenterName string         `json:"dataCenterName"`
 	StatusCount    map[string]int `json:"statusCount"`
 	description    string         `json:"description,omitempty"`
+	VappType       interface{}    `json:"vappType"`
+	NodeCount      interface{}    `json:"nodeCount"`
+	VmsToAdd       interface{}    `json:"vmsToAdd,omitempty"`
 }
 
 type VappListRsp struct {
