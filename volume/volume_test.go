@@ -51,14 +51,20 @@ func TestCreateVolume(t *testing.T) {
 
 func TestGetVolumesInDatastore(t *testing.T) {
 	icsConnection = icsgo.ICSConnection{
-		//Username: "admin",
-		//Password: "Cloud@s1",
-		AccessKeyID:     "09cb1VN5xu5T7469d1Yo",
-		AccessKeySecret: "6e4711WY1pY310qPG8ntv7RdIuM8vDO07XKM2GeX",
-		Hostname:        "10.49.34.107",
-		Port:            "443",
-		Insecure:        true,
+		Username: "admin",
+		Password: "Cloud@s1",
+		//AccessKeyID:     "09cb1VN5xu5T7469d1Yo",
+		//AccessKeySecret: "6e4711WY1pY310qPG8ntv7RdIuM8vDO07XKM2GeX",
+		Hostname: "10.49.34.159",
+		Port:     "443",
+		Insecure: true,
 	}
+
+	//datastoreID := "8ab1a2968145ef35018145fc98ee0097"  // 10.49.34.22
+	//datastoreID := "8ab0b34979c154880179c207ef05004d" // 10.49.34.23
+	datastoreID := "8ab1a21f8e11b0f9018e11b4c19f0016" // 10.49.34.159
+	//datastoreID := "8ab1a2218d55e067018d55ec81d10042" // 10.49.34.161
+	//datastoreID := "8ab1a2228e07312e018e0736db0e0016" // 10.49.34.162
 	ctx = context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
@@ -73,17 +79,12 @@ func TestGetVolumesInDatastore(t *testing.T) {
 
 	volumeClient = NewVolumeService(icsConnection.Client)
 	fmt.Println("********************GetVolumesInDatastore**************")
-	volumes, err := volumeClient.GetVolumesInDatastore(ctx, "8ab1a2eb81989a090181998f6ffb0005")
+	volumes, err := volumeClient.GetVolumesInDatastore(ctx, datastoreID)
 	if volumes != nil {
-		for i := 0; i < len(volumes); {
+		for i := 0; i < len(volumes); i++ {
 			volumeinfo := volumes[i]
-			if volumeinfo.Name == "test2" {
-				volumeid = volumeinfo.ID
-				fmt.Printf("volume %s info: %+v \n", volumeinfo.Name, volumeinfo)
-			} else {
-				fmt.Printf("volume id:%s  name:%s \n", volumeinfo.ID, volumeinfo.Name)
-			}
-			i++
+			volumeJson, _ := json.MarshalIndent(volumeinfo, "", "\t")
+			t.Logf("Volume Info: %s\n", string(volumeJson))
 		}
 	} else {
 		fmt.Println(err.Error())
@@ -94,17 +95,21 @@ func TestGetVolumeInfoById(t *testing.T) {
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.22",
+		Hostname: "10.49.34.162",
 		Port:     "443",
 		Insecure: true,
 	}
 	ctx = context.Background()
 	icsConnection.Connect(ctx)
+	//volumeID := "8ab1a21f8e11b0f9018e12522ea60027" //10.49.34.159
+	//volumeID := "8ab1a2218dbb7668018dc22cd9060030" //10.49.34.161
+	volumeID := "8ab1a2228e07312e018e0e0e83f50021" //10.49.34.162
 	volumeClient = NewVolumeService(icsConnection.Client)
 	fmt.Println("********************TestGetVolumeInfoById**************")
-	volumeinfo, err := volumeClient.GetVolumeInfoById(ctx, "8ab0b28d7867fb1d0178687e6c13006a")
+	volumeinfo, err := volumeClient.GetVolumeInfoById(ctx, volumeID)
 	if err == nil {
-		fmt.Println(volumeinfo.Name)
+		volumeJson, _ := json.MarshalIndent(volumeinfo, "", "\t")
+		t.Logf("Volume Info: %s\n", string(volumeJson))
 	} else {
 		fmt.Println(err.Error())
 	}
@@ -155,20 +160,24 @@ func TestSetVolume(t *testing.T) {
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.48.50.13",
+		Hostname: "10.49.34.162",
 		Port:     "443",
 		Insecure: true,
 	}
 	ctx = context.Background()
 	icsConnection.Connect(ctx)
-	volumeId := "8ab0b28d7867fb1d0178687e6c13006a"
+	//volumeId := "8ab1a296868272db0186ce6476fa0073" //10.49.34.22
+	//volumeId := "8ab1a297860c01270186ce646ec701fa" //10.49.34.23
+	//volumeId := "8ab1a21f8e11b0f9018e12522ea60027" //10.49.34.159
+	//volumeId := "8ab1a2218dbb7668018dc22cd9060030" //10.49.34.161
+	volumeId := "8ab1a2228e07312e018e0e0e83f50021" //10.49.34.162
 	volumeClient = NewVolumeService(icsConnection.Client)
 	volumeInfo, err := volumeClient.GetVolumeInfoById(ctx, volumeId)
 	if err != nil {
 		t.Fatalf("Failed to get volume info. Error: %v", err)
 	}
 
-	volumeInfo.Size += 5
+	volumeInfo.Size += 10
 	task, err := volumeClient.SetVolume(ctx, volumeId, volumeInfo)
 	if err != nil {
 		t.Fatalf("Failed to set volume. Error: %v", err)
