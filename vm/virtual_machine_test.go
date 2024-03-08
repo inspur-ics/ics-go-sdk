@@ -13,21 +13,29 @@ var (
 	icsConnection = &icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.161",
+		Hostname: "10.49.34.159",
 		Port:     "443",
 		Insecure: true,
 	}
 )
 
-func TestGetVM(t *testing.T) {
+func TestGetVMInfo(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
 		t.Fatal("Create ics connection error!")
 	}
 
+	vmId := "8ab1a297881ce9fc01884d15f13500a4" //10.49.34.23 on
+	//vmId := "8ab1a2968df9271d018e1140871501a2" //10.49.34.22 on
+	//vmId := "8ab1a21f8e11b0f9018e1254eb8d002d" //10.49.34.159 on
+	//vmId := "8ab1a21f8e11b0f9018e1d305183006c" //10.49.34.159 off
+	//vmId := "8ab1a2218dc27ce1018dc710c7380081" //10.49.34.161 on
+	//vmId := "8ab1a2218de95b48018deecf92be00ea" //10.49.34.161 off
+	//vmId := "8ab1a2228e07312e018e0e10d39f0027" //10.49.34.162 on
+	//vmId := "8ab1a2228e07312e018e1d1f9cd10075" //10.49.34.162 off
 	vmClient := NewVirtualMachineService(icsConnection.Client)
-	vm, err := vmClient.GetVM(ctx, "8ab0b28d77be994a017819e3f65f1169")
+	vm, err := vmClient.GetVM(ctx, vmId)
 	if err != nil {
 		t.Errorf("Failed to get vm info by specified id. Error: %v", err)
 	} else {
@@ -43,13 +51,24 @@ func TestSetVM(t *testing.T) {
 		t.Fatal("Create ics connection error!")
 	}
 
+	vmId := "8ab1a21f8e11b0f9018e1d8c261f0099" //10.49.34.159 on
+	//vmId := "8ab1a21f8e11b0f9018e1d305183006c" //10.49.34.159 off
+	//vmId := "8ab1a2218dc27ce1018dc710c7380081" //10.49.34.161 on
+	//vmId := "8ab1a2218de95b48018deecf92be00ea" //10.49.34.161 off
+	//vmId := "8ab1a2228e07312e018e0e10d39f0027" //10.49.34.162 on
+	//vmId := "8ab1a2228e07312e018e1d1f9cd10075" //10.49.34.162 off
 	vmClient := NewVirtualMachineService(icsConnection.Client)
-	vm, err := vmClient.GetVM(ctx, "8a878bda6f6f3ca4016f6f6eb8d300bb")
+	vm, err := vmClient.GetVM(ctx, vmId)
 	if err != nil {
 		t.Fatalf("Failed to get vm info by specified id. Error: %v", err)
 	}
 
-	vm.Name = "11.82_zhanghuijian1"
+	//vm.Name = vm.Name + "x"
+	//vm.Disks[0].Volume.Size += 10
+	if len(vm.Disks) > 1 {
+		//remove the last disk
+		vm.Disks = vm.Disks[:len(vm.Disks)-1]
+	}
 	//vm.VncPasswd = "12345678"
 	task, err := vmClient.SetVM(ctx, *vm)
 	if err != nil {
