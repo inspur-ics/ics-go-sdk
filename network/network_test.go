@@ -12,7 +12,7 @@ var (
 	icsConnection = &icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.161",
+		Hostname: "10.49.34.162",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -52,5 +52,27 @@ func TestGetNetworkList(t *testing.T) {
 			networkJson, _ := json.MarshalIndent(network, "", "\t")
 			t.Logf("Network Info: %s\n", string(networkJson))
 		}
+	}
+}
+
+func TestGetNetworByID(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	//networkID := "8ab1a2968145ef350181460bb71200ac" // 10.49.34.22
+	//networkID := "8ab0b34979c154880179c2070cbf0044" // 10.49.34.23
+	//networkID := "8ab1a21f8e11a48e018e11a9d630002e" // 10.49.34.159
+	//networkID := "8ab1a2218d55e067018d55e716d60039" // 10.49.34.161
+	networkID := "8ab1a2228e071ead018e072d9f970037" // 10.49.34.162
+	networkClient := NewNetworkService(icsConnection.Client)
+	network, err := networkClient.GetNetworkByID(ctx, networkID)
+	if err != nil {
+		t.Errorf("Failed to get network by ID %s. Error: %v\n", networkID, err)
+	} else {
+		networkJson, _ := json.MarshalIndent(network, "", "\t")
+		t.Logf("Network Info: %s\n", string(networkJson))
 	}
 }

@@ -12,7 +12,7 @@ var (
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.161",
+		Hostname: "10.49.34.162",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -43,7 +43,7 @@ func TestGetClusterByName(t *testing.T) {
 		t.Fatal("Create ics connection error!")
 	}
 
-	clusterName := "cluster"
+	clusterName := "Cluster"
 	clusterClient := NewClusterService(icsConnection.Client)
 	clusterInfo, err := clusterClient.GetClusterByName(ctx, clusterName)
 	if clusterInfo != nil {

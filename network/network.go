@@ -22,6 +22,11 @@ func (n *NetworkService) GetNetworkByName(ctx context.Context, name string) (*ty
 	return nil, fmt.Errorf("Network not found by name %s", name)
 }
 
+func (n *NetworkService) GetNetworkByID(ctx context.Context, networkID string) (*types.Network, error) {
+	networkInfo, err := methods.GetNetworkByID(ctx, n.RestAPITripper, networkID)
+	return &networkInfo, err
+}
+
 func (n *NetworkService) GetNetworkList(ctx context.Context) ([]types.Network, error) {
 	networkList, err := methods.GetNetworkList(ctx, n.RestAPITripper)
 	return networkList, err

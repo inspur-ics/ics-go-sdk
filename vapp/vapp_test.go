@@ -13,7 +13,7 @@ var (
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.161",
+		Hostname: "10.49.34.162",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -44,7 +44,7 @@ func TestGetVappByName(t *testing.T) {
 		t.Fatal("Create ics connection error!")
 	}
 
-	vappName := "wyc"
+	vappName := "vapp-test"
 	vappClient := NewVappService(icsConnection.Client)
 	vappInfo, err := vappClient.GetVappByName(ctx, vappName)
 	if vappInfo != nil {
@@ -63,9 +63,13 @@ func TestCreateVapp(t *testing.T) {
 	}
 
 	vappReq := types.VappCreateReq{
-		Name:         "test_vapp2",
-		Description:  "VAPP002",
-		DataCenterID: "3f0094542ebb11eaa2691a130ac12531",
+		Name:        "test_1",
+		Description: "go-sdk-test",
+		//DataCenterID: "970c1a57e72711ec8e00aef2d98d5652", //10.49.34.22
+		//DataCenterID: "04b07c92c1e211ebb21adec2e1510cb9", //10.49.34.23
+		//DataCenterID: "62567b0f4a0a11eda2e896b6da1bc6aa", //10.49.34.159
+		//DataCenterID: "892506b8bebc11eeb7309aecff09a95a", //10.49.34.161
+		DataCenterID: "302b95a1d9c811eea1c2bada90245722", //10.49.34.162
 	}
 	vappClient := NewVappService(icsConnection.Client)
 	task, err := vappClient.CreateVapp(ctx, vappReq)

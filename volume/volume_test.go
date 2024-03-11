@@ -7,7 +7,6 @@ import (
 	icsgo "github.com/inspur-ics/ics-go-sdk"
 	"github.com/inspur-ics/ics-go-sdk/client/types"
 	"testing"
-	"time"
 )
 
 var volumeClient *VolumeService
@@ -18,13 +17,13 @@ var volumeid string
 func TestCreateVolume(t *testing.T) {
 	fmt.Println("********************CreateVolume**************")
 	icsConnection = icsgo.ICSConnection{
-		//Username: "admin",
-		//Password: "Cloud@s1",
-		AccessKeyID:     "09cb1VN5xu5T7469d1Yo",
-		AccessKeySecret: "6e4711WY1pY310qPG8ntv7RdIuM8vDO07XKM2GeX",
-		Hostname:        "10.49.34.107",
-		Port:            "443",
-		Insecure:        true,
+		Username: "admin",
+		Password: "Cloud@s1",
+		//AccessKeyID:     "09cb1VN5xu5T7469d1Yo",
+		//AccessKeySecret: "6e4711WY1pY310qPG8ntv7RdIuM8vDO07XKM2GeX",
+		Hostname: "10.49.34.162",
+		Port:     "443",
+		Insecure: true,
 	}
 	ctx = context.Background()
 	err := icsConnection.Connect(ctx)
@@ -32,9 +31,13 @@ func TestCreateVolume(t *testing.T) {
 		t.Fatal("Create ics connection error!")
 	}
 	createVolumeReq := types.VolumeReq{
-		Name:          "test2",
-		Size:          "20",
-		DataStoreId:   "8ab1a2eb81989a090181998f6ffb0005",
+		Name: "vol_001",
+		Size: "20",
+		//DataStoreId:   "8ab1a2968145ef35018145fc98ee0097", // 10.49.34.22
+		//DataStoreId:   "8ab0b34979c154880179c207ef05004d", // 10.49.34.23
+		//DataStoreId:   "8ab1a21f8e11b0f9018e11b4c19f0016", // 10.49.34.159
+		//DataStoreId:   "8ab1a2218d55e067018d55ec81d10042", // 10.49.34.161
+		DataStoreId:   "8ab1a2228e07312e018e0736db0e0016", // 10.49.34.162
 		DataStoreType: "LOCAL",
 		VolumePolicy:  "THIN",
 		Format:        "RAW",
@@ -45,8 +48,17 @@ func TestCreateVolume(t *testing.T) {
 	}
 	volumeClient = NewVolumeService(icsConnection.Client)
 	task, err := volumeClient.CreateVolume(ctx, createVolumeReq)
-	fmt.Println(task.TaskId)
-	time.Sleep(5 * time.Second)
+	if err != nil {
+		t.Fatalf("Failed to Create volume. Error: %v", err)
+	}
+	t.Logf("Waiting task %v finish.....\n", task.TaskId)
+	taskInfo, err := volumeClient.TraceTaskProcess(&task)
+	if err != nil {
+		t.Fatalf("Failed to trace task. Error: %v", err)
+	} else {
+		taskJson, _ := json.MarshalIndent(taskInfo, "", "\t")
+		t.Logf("Task Status: %v\n", string(taskJson))
+	}
 }
 
 func TestGetVolumesInDatastore(t *testing.T) {

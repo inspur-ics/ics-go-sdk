@@ -1,51 +1,50 @@
 package tag
 
 import (
-    "context"
-    "fmt"
-    icsgo "github.com/inspur-ics/ics-go-sdk"
-    "testing"
+	"context"
+	"encoding/json"
+	"fmt"
+	icsgo "github.com/inspur-ics/ics-go-sdk"
+	"testing"
+)
+
+var (
+	icsConnection = icsgo.ICSConnection{
+		Username: "admin",
+		Password: "Cloud@s1",
+		Hostname: "10.49.34.161",
+		Port:     "443",
+		Insecure: true,
+	}
 )
 
 func TestGetTag(t *testing.T) {
-   icsConnection := &icsgo.ICSConnection{
-       Username: "admin",
-       Password: "admin@inspur",
-       Hostname: "10.7.11.90",
-       Port:     "443",
-       Insecure: true,
-   }
-   ctx := context.Background()
-   err := icsConnection.Connect(ctx)
-   if err != nil {
-       t.Fatal("Create ics connection error!")
-   }
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
 
-   tagClient := NewTagsService(icsConnection.Client)
-   tag, err := tagClient.GetTag(ctx,"242c3f4c-fdd0-4ad0-b250-90b51581d5a9")
-   if tag != nil {
-       fmt.Printf("Tag json:%+v.", tag)
-   }
+	tagClient := NewTagsService(icsConnection.Client)
+	tag, err := tagClient.GetTag(ctx, "ba6d1a64-0515-45db-8b80-be5d3f932256")
+	if tag != nil {
+		tagJson, _ := json.MarshalIndent(tag, "", "\t")
+		t.Logf("Tag Info: %s\n", string(tagJson))
+	}
 }
 
 func TestListAttachedTags(t *testing.T) {
-    icsConnection := &icsgo.ICSConnection{
-        Username: "admin",
-        Password: "admin@inspur",
-        Hostname: "10.7.11.90",
-        Port:     "443",
-        Insecure: true,
-    }
-    ctx := context.Background()
-    err := icsConnection.Connect(ctx)
-    if err != nil {
-        t.Fatal("Create ics connection error!")
-    }
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
 
-    tagClient := NewTagsService(icsConnection.Client)
-    tags, err := tagClient.ListAttachedTags(ctx,"HOST", "792b1e3f-8be6-43de-b8c7-27a0327dcd97")
-    if tags != nil {
-        fmt.Printf("tags:%+v", tags)
-    }
-
+	tagClient := NewTagsService(icsConnection.Client)
+	tags, err := tagClient.ListAttachedTags(ctx, "HOST", "56c940ba-f62d-423f-aaf3-f91dfc22d7ea")
+	if err != nil {
+		t.Fatalf("Get attached tags failed! Error:%v", err)
+	} else {
+		fmt.Printf("tags:%+v", tags)
+	}
 }

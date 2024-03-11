@@ -37,6 +37,24 @@ func TestGetHostList(t *testing.T) {
 	}
 }
 
+func TestGetHostInfo(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
+	}
+
+	hostUUID := "2cf4bb24-cc1d-46fb-862e-e408da0898ce"
+	hostClient := NewHostService(icsConnection.Client)
+	hostInfo, err := hostClient.GetHost(ctx, hostUUID)
+	if err != nil {
+		t.Errorf("Failed to get host info. Error: %v\n", err.Error())
+	} else {
+		hostJson, _ := json.MarshalIndent(hostInfo, "", "\t")
+		t.Logf("Host Info: %s\n", string(hostJson))
+	}
+}
+
 func TestGetHostListByClusterID(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
@@ -222,7 +240,7 @@ func TestGetHostHealthInfo(t *testing.T) {
 		t.Fatal("Create ics connection error!")
 	}
 
-	hostUUID := "792b1e3f-8be6-43de-b8c7-27a0327dcd97"
+	hostUUID := "2cf4bb24-cc1d-46fb-862e-e408da0898ce"
 	hostClient := NewHostService(icsConnection.Client)
 	healthInfo, err := hostClient.GetHostHealthInfo(ctx, hostUUID)
 

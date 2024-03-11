@@ -15,7 +15,7 @@ var (
 	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.161",
+		Hostname: "10.49.34.162",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -66,15 +66,19 @@ func TestStorageInfoById(t *testing.T) {
 	if err != nil {
 		t.Fatal("Create ics connection error!")
 	}
+
+	//storageID := "8ab1a2968145ef35018145fc98ee0097" //10.49.34.22
+	//storageID := "8ab0b34979c154880179c207ef05004d" //10.49.34.23
+	//storageID := "8ab1a21f8e11b0f9018e11b4c19f0016" //10.49.34.159
+	//storageID := "8ab1a2218d55e067018d55ec81d10042" //10.49.34.161
+	storageID := "8ab1a2228e07312e018e0736db0e0016" //10.49.34.162
 	storageClient = NewStorageService(icsConnection.Client)
-	storageinfo, err := storageClient.GetStorageInfoById(ctx, "8ab1a2968205c11601825d5599e615f7")
+	storageInfo, err := storageClient.GetStorageInfoById(ctx, storageID)
 	if err != nil {
-		fmt.Println(err.Error())
-		t.Fatal("Get storage info failed!")
+		t.Errorf("Get storage info failed! Error:%v", err)
 	} else {
-		fmt.Println(storageinfo.Name)
-		fmt.Println(storageinfo.MountPath)
-		fmt.Println(storageinfo.AllocPolicy)
+		storageJson, _ := json.MarshalIndent(storageInfo, "", "\t")
+		t.Logf("Storage Info: %s\n", string(storageJson))
 	}
 }
 

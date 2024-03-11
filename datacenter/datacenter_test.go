@@ -41,7 +41,7 @@ func TestGetDatacenterByName(t *testing.T) {
 	icsConnection := &icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.161",
+		Hostname: "10.49.34.22",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -51,7 +51,7 @@ func TestGetDatacenterByName(t *testing.T) {
 		t.Fatal("Create ics connection error!")
 	}
 
-	dcName := "datacenter02"
+	dcName := "Datacenter"
 	dcClient := NewDatacenterService(icsConnection.Client)
 	dcInfo, err := dcClient.GetDatacenterByName(ctx, dcName)
 	if err != nil {
