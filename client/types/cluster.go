@@ -41,7 +41,7 @@ type Cluster struct {
 		AccessControlEnabled  bool          `json:"accessControlEnabled"`
 		AccessControlStrategy string        `json:"accessControlStrategy,omitempty"`
 		FailoverHosts         []interface{} `json:"failoverHosts"`
-		FailoverHostIds       interface{}   `json:"failoverHostIds"`
+		FailoverHostIds       []string      `json:"failoverHostIds"`
 		HAPriority            string        `json:"haPriority,omitempty"`
 		NetHaEnabled          bool          `json:"netHaEnabled"`
 		NetTolerance          string        `json:"netTolerance"`
@@ -58,7 +58,7 @@ type Cluster struct {
 		CdpProcessStrategy    string        `json:"cdpProcessStrategy,omitempty"`
 	} `json:"ha"`
 	DataCenterDto              Datacenter  `json:"dataCenterDto"`
-	HostIds                    interface{} `json:"hostIds"`
+	HostIds                    []string    `json:"hostIds"`
 	Tags                       []Tag       `json:"tags"`
 	CpuFreePercent             float64     `json:"cpuFreePercent"`
 	MemFreePercent             float64     `json:"memFreePercent"`

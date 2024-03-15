@@ -44,7 +44,7 @@ type Datacenter struct {
 	RawStoreNum                int           `json:"rawstoreNum"`
 	NfsStoreNum                int           `json:"nfsstoreNum"`
 	XactiveStoreNum            int           `json:"xactivestoreNum"`
-	NetworkType                interface{}   `json:"networkType"`
+	NetworkType                string        `json:"networkType"`
 	VswitchDtos                interface{}   `json:"vswitchDtos"`
 	SdnNetworkDtos             []interface{} `json:"sdnNetworkDtos"`
 	SdnInit                    bool          `json:"sdnInit"`

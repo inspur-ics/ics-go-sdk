@@ -11,7 +11,7 @@ type Switch struct {
 	ID               string      `json:"id"`
 	Name             string      `json:"name"`
 	ResourceID       string      `json:"resourceId"`
-	ControllerIP     interface{} `json:"controllerIP"`
+	ControllerIP     string      `json:"controllerIP"`
 	DataCenterDto    Datacenter  `json:"dataCenterDto"`
 	HostDtos         Host        `json:"hostDtos"`
 	SwitchType       string      `json:"switchType"`
@@ -48,7 +48,7 @@ type Switch struct {
 	BrLimitStatus    bool        `json:"brLimitStatus"`
 	Hidden           bool        `json:"hidden"`
 	NetworkTopoly    bool        `json:"networkTopoly"`
-	ArbitrativeIp    interface{} `json:"arbitrativeIp"`
+	ArbitrativeIp    string      `json:"arbitrativeIp"`
 	HbAutoCreate     bool        `json:"hbAutoCreate"`
 	EnableFcoe       bool        `json:"enableFcoe"`
 	EnableSc         bool        `json:"enableSc"`

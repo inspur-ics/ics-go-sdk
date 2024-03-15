@@ -46,25 +46,25 @@ type Host struct {
 	Model                             string      `json:"model"`
 	CPUType                           string      `json:"cpuType"`
 	VtDegree                          float64     `json:"vtDegree"`
-	Powerstate                        interface{} `json:"powerstate"`
+	PowerState                        string      `json:"powerstate"`
 	HostBmcDto                        interface{} `json:"hostBmcDto"`
 	Tags                              []Tag       `json:"tags"`
-	MountPath                         interface{} `json:"mountPath"`
-	MonMountState                     interface{} `json:"monMountState"`
-	CPUModel                          interface{} `json:"cpuModel"`
+	MountPath                         string      `json:"mountPath"`
+	MonMountState                     string      `json:"monMountState"`
+	CPUModel                          []string    `json:"cpuModel"`
 	NetworkDtos                       interface{} `json:"networkDtos"`
-	PortIP                            interface{} `json:"portIp"`
+	PortIP                            string      `json:"portIp"`
 	Monstatus                         bool        `json:"monstatus"`
-	HostIqn                           interface{} `json:"hostIqn"`
+	HostIqn                           string      `json:"hostIqn"`
 	VxlanPortDto                      interface{} `json:"vxlanPortDto"`
 	SdnUpLinks                        interface{} `json:"sdnUpLinks"`
 	AllPNicsCount                     int         `json:"allPNicsCount"`
 	AvailablePNicsCount               int         `json:"availablePNicsCount"`
-	CfsDomainStatus                   interface{} `json:"cfsDomainStatus"`
-	SerialNumber                      interface{} `json:"serialNumber"`
-	Manufacturer                      interface{} `json:"manufacturer"`
-	IndicatorStatus                   interface{} `json:"indicatorStatus"`
-	EntryTemperature                  interface{} `json:"entryTemperature"`
+	CfsDomainStatus                   string      `json:"cfsDomainStatus"`
+	SerialNumber                      string      `json:"serialNumber"`
+	Manufacturer                      string      `json:"manufacturer"`
+	IndicatorStatus                   string      `json:"indicatorStatus"`
+	EntryTemperature                  string      `json:"entryTemperature"`
 	MulticastEnabled                  bool        `json:"multicastEnabled"`
 	BroadcastLimitEnabled             bool        `json:"broadcastLimitEnabled"`
 	Pcies                             interface{} `json:"pcies"`

@@ -8,14 +8,17 @@ import (
 	"testing"
 )
 
-func TestGetAllDatacenters(t *testing.T) {
-	icsConnection := &icsgo.ICSConnection{
+var (
+	icsConnection = icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
 		Hostname: "10.49.34.161",
 		Port:     "443",
 		Insecure: true,
 	}
+)
+
+func TestGetAllDatacenters(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
@@ -37,14 +40,25 @@ func TestGetAllDatacenters(t *testing.T) {
 	}
 }
 
-func TestGetDatacenterByName(t *testing.T) {
-	icsConnection := &icsgo.ICSConnection{
-		Username: "admin",
-		Password: "Cloud@s1",
-		Hostname: "10.49.34.22",
-		Port:     "443",
-		Insecure: true,
+func TestGetDatacenterByID(t *testing.T) {
+	ctx := context.Background()
+	err := icsConnection.Connect(ctx)
+	if err != nil {
+		t.Fatal("Create ics connection error!")
 	}
+
+	dcID := "892506b8bebc11eeb7309aecff09a95a"
+	dcClient := NewDatacenterService(icsConnection.Client)
+	dcInfo, err := dcClient.GetDatacenter(ctx, dcID)
+	if err != nil {
+		t.Errorf("Failed to get datacenter info by ID. Error: %v", err)
+	} else {
+		dcJson, _ := json.MarshalIndent(dcInfo, "", "\t")
+		t.Logf("DatacenterInfo: %v", string(dcJson))
+	}
+}
+
+func TestGetDatacenterByName(t *testing.T) {
 	ctx := context.Background()
 	err := icsConnection.Connect(ctx)
 	if err != nil {
