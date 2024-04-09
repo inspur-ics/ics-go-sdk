@@ -13,7 +13,7 @@ var (
 	icsConnection = &icsgo.ICSConnection{
 		Username: "admin",
 		Password: "Cloud@s1",
-		Hostname: "10.49.34.159",
+		Hostname: "10.49.34.162",
 		Port:     "443",
 		Insecure: true,
 	}
@@ -485,9 +485,9 @@ func TestImportVM(t *testing.T) {
 	}
 
 	vmClient := NewVirtualMachineService(icsConnection.Client)
-	ovaFilePath := "/datastore/2afee96f-4242-4841-926d-e2553b1a3ca5/VMTemp.ova"
-	hostUUID := "56c940ba-f62d-423f-aaf3-f91dfc22d7ea"
-	imageHostUUID := "56c940ba-f62d-423f-aaf3-f91dfc22d7ea"
+	ovaFilePath := "/datastore/57f089e7-0165-4868-be63-9bbafebc7225/vm_rh7.6_x86.ova"
+	hostUUID := "2cf4bb24-cc1d-46fb-862e-e408da0898ce"
+	imageHostUUID := "2cf4bb24-cc1d-46fb-862e-e408da0898ce"
 	vmConfig, err := vmClient.GetOvaConfig(ctx, ovaFilePath, hostUUID, imageHostUUID)
 	if err != nil {
 		t.Fatalf("Failed to get ova config info. Error: %v", err)
@@ -522,16 +522,17 @@ runcmd:
 	vmConfig.HostID = hostUUID
 	vmConfig.Template = false
 	vmConfig.CPUSocket = vmConfig.CPUNum / vmConfig.CPUCore
-	vmConfig.DataStoreID = "8ab1a2218d55e067018d55ec81d10042"
-	vmConfig.Disks[0].Volume.DataStoreID = "8ab1a2218d55e067018d55ec81d10042"
+	vmConfig.DataStoreID = "8ab1a2228e07312e018e0736db0e0016"
+	vmConfig.Disks[0].Volume.DataStoreID = "8ab1a2228e07312e018e0736db0e0016"
 	vmConfig.Nics[0].DeviceName = "manageNetwork0"
-	vmConfig.Nics[0].DeviceID = "8ab1a2218d55e067018d55e716d60039"
+	vmConfig.Nics[0].DeviceID = "8ab1a2228e071ead018e072d9f970037"
 	vmConfig.CloudInit = types.CloudInit{
 		MetaData:       metadata,
 		UserData:       userdata,
 		DataSourceType: "OPENSTACK",
 	}
-	task, err := vmClient.ImportVM(ctx, *vmConfig, ovaFilePath, imageHostUUID)
+	rateLimit := 100
+	task, err := vmClient.ImportVM(ctx, *vmConfig, ovaFilePath, imageHostUUID, rateLimit)
 	if err != nil {
 		t.Fatalf("Failed to import vm by ova. Error: %v", err)
 	} else {

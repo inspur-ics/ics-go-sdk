@@ -278,11 +278,14 @@ func CreateVMByTemplate(ctx context.Context, r restful.RestAPITripper, vmSpec ty
 }
 
 func ImportVM(ctx context.Context, r restful.RestAPITripper, vmSpec types.VirtualMachine,
-	ovaFilePath string, hostUUID string) (*types.Task, error) {
+	ovaFilePath string, hostUUID string, rateLimit int) (*types.Task, error) {
 	var api types.ICSApi
 	var response = types.Task{}
 
-	api.Api = fmt.Sprintf("/vms/ovfs?action=import&ovaFile=%s&hostId=%s", ovaFilePath, hostUUID)
+	if rateLimit < 20 || rateLimit > 100 {
+		rateLimit = 40
+	}
+	api.Api = fmt.Sprintf("/vms/ovfs?action=import&ovaFile=%s&hostId=%s&rateLimit=%d", ovaFilePath, hostUUID, rateLimit)
 	api.Token = true
 
 	resp, err := r.PutTrip(ctx, api, vmSpec)

@@ -158,7 +158,7 @@ func (v *VirtualMachineService) GetOvaConfig(ctx context.Context, ovaFilePath st
 }
 
 func (v *VirtualMachineService) ImportVM(ctx context.Context, vmSpec types.VirtualMachine,
-	ovaFilePath string, hostUUID string) (*types.Task, error) {
-	task, err := methods.ImportVM(ctx, v.RestAPITripper, vmSpec, ovaFilePath, hostUUID)
+	ovaFilePath string, hostUUID string, rateLimit int) (*types.Task, error) {
+	task, err := methods.ImportVM(ctx, v.RestAPITripper, vmSpec, ovaFilePath, hostUUID, rateLimit)
 	return task, err
 }
