@@ -31,3 +31,28 @@ func (n *NetworkService) GetNetworkList(ctx context.Context) ([]types.Network, e
 	networkList, err := methods.GetNetworkList(ctx, n.RestAPITripper)
 	return networkList, err
 }
+
+func (n *NetworkService) GetSdnNetworkByName(ctx context.Context, name string) (*types.SdnNetwork, error) {
+	sdnNetworkList, err := methods.GetSdnNetworkList(ctx, n.RestAPITripper)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, network := range sdnNetworkList {
+		if network.Name == name {
+			return &network, nil
+		}
+	}
+
+	return nil, fmt.Errorf("SDN network not found by name %s", name)
+}
+
+func (n *NetworkService) GetSdnNetworkByID(ctx context.Context, networkID string) (*types.SdnNetwork, error) {
+	sdnNetworkInfo, err := methods.GetSdnNetworkByID(ctx, n.RestAPITripper, networkID)
+	return &sdnNetworkInfo, err
+}
+
+func (n *NetworkService) GetSdnNetworkList(ctx context.Context) ([]types.SdnNetwork, error) {
+	sdnNetworkList, err := methods.GetSdnNetworkList(ctx, n.RestAPITripper)
+	return sdnNetworkList, err
+}

@@ -98,3 +98,56 @@ type Network struct {
 	Pools           []interface{} `json:"pools"`
 	UsedByHbLink    bool          `json:"usedByHbLink"`
 }
+
+type SdnNetworkPageResponse struct {
+	TotalPage   int          `json:"totalPage"`
+	CurrentPage int          `json:"currentPage"`
+	TotalSize   int          `json:"totalSize"`
+	Items       []SdnNetwork `json:"items"`
+}
+
+type SdnNetwork struct {
+	ID                string      `json:"id"`
+	Name              string      `json:"name"`
+	DataCenterDto     Datacenter  `json:"dataCenterDto"`
+	SubnetKeys        []SdnSubnet `json:"subnetKeys"`
+	Status            string      `json:"status"`
+	RouterExternal    bool        `json:"routerExternal"`
+	NetworkTopoly     bool        `json:"networkTopoly"`
+	ProviderSegID     string      `json:"providerSegID"`
+	NetworkType       string      `json:"networkType"`
+	ProviderPhyNet    string      `json:"providerPhyNet"`
+	SubnetDto         interface{} `json:"subnetDto"`
+	SubnetCount       int         `json:"subnetCount"`
+	PortCount         int         `json:"portCount"`
+	VSwitchID         string      `json:"vswitchId,omitempty"`
+	Type              string      `json:"type"`
+	RouterDtos        interface{} `json:"routerDtos"`
+	FirewallDto       interface{} `json:"firewallDto"`
+	UsedIp            int         `json:"usedIp"`
+	TotalIp           int         `json:"totalIp"`
+	MiredirectStatus  bool        `json:"miredirectStatus"`
+	MulticastStatus   bool        `json:"multicastStatus"`
+	PortForwardingCnt int         `json:"portForwardingCnt"`
+	L2GatewayStatus   bool        `json:"l2GatewayStatus"`
+	QosEnabled        bool        `json:"qosEnabled"`
+	UplinkRate        int         `json:"uplinkRate"`
+	DownlinkRate      int         `json:"downlinkRate"`
+}
+
+type SdnSubnet struct {
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	Cidr       string `json:"cidr"`
+	EnableDHCP bool   `json:"enableDHCP"`
+	Gateway    string `json:"gateway"`
+	RouterID   string `json:"routerId,omitempty"`
+	RouterName string `json:"routerName,omitempty"`
+	SubnetID   string `json:"subnetId"`
+	SubnetName string `json:"subnetName"`
+	Pools      []struct {
+		Start string `json:"start"`
+		End   string `json:"end"`
+	} `json:"pools"`
+	NetworkTopoly bool `json:"networkTopoly"`
+}
