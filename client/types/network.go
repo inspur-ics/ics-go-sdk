@@ -13,7 +13,7 @@ type Switch struct {
 	ResourceID       string      `json:"resourceId"`
 	ControllerIP     string      `json:"controllerIP"`
 	DataCenterDto    Datacenter  `json:"dataCenterDto"`
-	HostDtos         Host        `json:"hostDtos"`
+	HostDtos         []Host      `json:"hostDtos"`
 	SwitchType       string      `json:"switchType"`
 	AppType          string      `json:"appType"`
 	Description      string      `json:"description"`

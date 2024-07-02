@@ -56,3 +56,8 @@ func (n *NetworkService) GetSdnNetworkList(ctx context.Context) ([]types.SdnNetw
 	sdnNetworkList, err := methods.GetSdnNetworkList(ctx, n.RestAPITripper)
 	return sdnNetworkList, err
 }
+
+func (n *NetworkService) GetExtSdnNetworkByID(ctx context.Context, networkID string) (*types.Network, error) {
+	networkInfo, err := methods.GetNetworkByID(ctx, n.RestAPITripper, networkID)
+	return &networkInfo, err
+}

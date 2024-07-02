@@ -125,3 +125,16 @@ func (h *HostService) GetHostAccessibleDatastoreList(ctx context.Context, hostid
 	storagelist, err := methods.GetHostAccessibleDatastoreList(ctx, h.RestAPITripper, hostid)
 	return storagelist, err
 }
+
+func (h *HostService) GetHostListByExtSdnNetworkID(ctx context.Context, networkID string) ([]types.Host, error) {
+	var hostList []types.Host
+	network, err := methods.GetNetworkByID(ctx, h.RestAPITripper, networkID)
+	if err != nil {
+		return hostList, err
+	}
+	if len(network.VswitchDto.HostDtos) >= 1 {
+		hostList = network.VswitchDto.HostDtos
+	}
+
+	return hostList, nil
+}
