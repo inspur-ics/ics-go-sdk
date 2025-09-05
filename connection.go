@@ -77,6 +77,13 @@ func (connection *ICSConnection) login(ctx context.Context, client *client.Clien
 
 // Logout calls SessionManager.Logout for the given connection.
 func (connection *ICSConnection) Logout(ctx context.Context) error {
+	if connection.Client == nil {
+		return nil
+	}
+
+	clientLock.Lock()
+	defer clientLock.Unlock()
+	
 	m := session.NewManager(connection.Client)
 	if err := m.Logout(ctx); err != nil {
 		klog.Errorf("Logout failed: %s", err)

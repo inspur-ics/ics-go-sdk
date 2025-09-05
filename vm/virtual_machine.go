@@ -63,13 +63,28 @@ func (v *VirtualMachineService) PowerOffVM(ctx context.Context, id string) (*typ
 	return task, err
 }
 
+func (v *VirtualMachineService) PowerRestartVM(ctx context.Context, id string) (*types.Task, error) {
+	task, err := methods.RestartVMById(ctx, v.RestAPITripper, id)
+	return task, err
+}
+
 func (v *VirtualMachineService) ShutdownVM(ctx context.Context, id string) (*types.Task, error) {
 	task, err := methods.ShutdownVMById(ctx, v.RestAPITripper, id)
 	return task, err
 }
 
-func (v *VirtualMachineService) RestartVM(ctx context.Context, id string) (*types.Task, error) {
-	task, err := methods.RestartVMById(ctx, v.RestAPITripper, id)
+func (v *VirtualMachineService) RebootVM(ctx context.Context, id string) (*types.Task, error) {
+	task, err := methods.RebootVMById(ctx, v.RestAPITripper, id)
+	return task, err
+}
+
+func (v *VirtualMachineService) PauseVM(ctx context.Context, id string) (*types.Task, error) {
+	task, err := methods.PauseVMById(ctx, v.RestAPITripper, id)
+	return task, err
+}
+
+func (v *VirtualMachineService) ResumeVM(ctx context.Context, id string) (*types.Task, error) {
+	task, err := methods.ResumeVMById(ctx, v.RestAPITripper, id)
 	return task, err
 }
 

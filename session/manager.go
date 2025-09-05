@@ -93,6 +93,11 @@ func (sm *Manager) UserSession(ctx context.Context) (*types.UserSession, error) 
 }
 
 func (sm *Manager) Logout(ctx context.Context) error {
+	if sm.client == nil {
+		return nil
+	}
+	id := sm.client.Authorization
 	_, err := methods.Logout(ctx, sm.client)
+	delete(sessions, id) 
 	return err
 }

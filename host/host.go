@@ -138,3 +138,23 @@ func (h *HostService) GetHostListByExtSdnNetworkID(ctx context.Context, networkI
 
 	return hostList, nil
 }
+
+func (h *HostService) PowerOnHost(ctx context.Context, hostId string) (*types.Task, error) {
+	return methods.PowerOnHostById(ctx, h.RestAPITripper, hostId)
+}
+
+func (h *HostService) PowerOffHost(ctx context.Context, hostId string) (*types.Task, error) {
+	return methods.PowerOffHostById(ctx, h.RestAPITripper, hostId)
+}
+
+func (h *HostService) PowerOffSafelyHost(ctx context.Context, hostId string) (*types.Task, error) {
+	return methods.PowerOffSafelyHostById(ctx, h.RestAPITripper, hostId)
+}
+
+func (h *HostService) ShutdownHost(ctx context.Context, hostId string) (*types.Task, error) {
+	return methods.ShutdownHostById(ctx, h.RestAPITripper, hostId)
+}
+
+func (h *HostService) RebootHost(ctx context.Context, hostId string, forceFlag bool) (*types.Task, error) {
+	return methods.RebootHostById(ctx, h.RestAPITripper, hostId, forceFlag)
+}
