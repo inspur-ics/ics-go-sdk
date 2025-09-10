@@ -196,6 +196,75 @@ func RestartVMById(ctx context.Context, r restful.RestAPITripper, vmId string) (
 	return &response, err
 }
 
+func RebootVMById(ctx context.Context, r restful.RestAPITripper, vmId string) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(vmId) <= 0 {
+		vmId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/vms/%s?action=reboot", vmId)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+func PauseVMById(ctx context.Context, r restful.RestAPITripper, vmId string) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(vmId) <= 0 {
+		vmId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/vms/%s?action=pause", vmId)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+func ResumeVMById(ctx context.Context, r restful.RestAPITripper, vmId string) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(vmId) <= 0 {
+		vmId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/vms/%s?action=resume", vmId)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
 func DeleteVMById(ctx context.Context, r restful.RestAPITripper, vmId string, deleteFile bool, removeData bool) (*types.Task, error) {
 	var reqBody *types.Common
 	var api types.ICSApi

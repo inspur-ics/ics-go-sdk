@@ -193,3 +193,154 @@ func GetHostAccessibleDatastoreList(ctx context.Context, r restful.RestAPITrippe
 
 	return response, err
 }
+
+func PowerOnHostById(ctx context.Context, r restful.RestAPITripper, hostId string) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(hostId) <= 0 {
+		hostId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/hosts/%s?action=poweron", hostId)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+func PowerOffHostById(ctx context.Context, r restful.RestAPITripper, hostId string) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(hostId) <= 0 {
+		hostId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/hosts/%s?action=poweroff", hostId)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+
+func PowerOffSafelyHostById(ctx context.Context, r restful.RestAPITripper, hostId string) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(hostId) <= 0 {
+		hostId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/hosts/%s?action=poweroffsafely", hostId)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+func ShutdownHostById(ctx context.Context, r restful.RestAPITripper, hostId string) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(hostId) <= 0 {
+		hostId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/hosts/%s?action=shutdown", hostId)
+	api.Token = true
+
+	resp, err := r.PutTrip(ctx, api, reqBody)
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+func RebootHostById(ctx context.Context, r restful.RestAPITripper, hostId string, forceFlag bool) (*types.Task, error) {
+	var reqBody *types.Common
+	var api types.ICSApi
+	var response = types.Task{}
+
+	if len(hostId) <= 0 {
+		hostId = "anonymous"
+	}
+	api.Api = fmt.Sprintf("/hosts/%s?action=reboot", hostId)
+	api.Token = true
+
+	var resp *restful.Response
+	var err error
+
+	if forceFlag {
+		var req = struct {
+			ForceFlag bool `json:"forceFlag"`
+		}{ ForceFlag: forceFlag }
+		api.Api = api.Api + "&forceFlag=true"
+
+		resp, err = r.PutTrip(ctx, api, &req)
+	} else {
+		resp, err = r.PutTrip(ctx, api, reqBody)
+	}
+	respBody, err1 := HandleResponse(resp, err)
+	if err1 != nil {
+		err = err1
+	} else if respBody != nil {
+		jsonErr := json.Unmarshal([]byte(respBody), &response)
+		err = JsonError(jsonErr)
+	}
+
+	return &response, err
+}
+
+// func RestartHostById(ctx context.Context, r restful.RestAPITripper, hostId string) (*types.Task, error) {
+// 	var reqBody *types.Common
+// 	var api types.ICSApi
+// 	var response = types.Task{}
+
+// 	if len(hostId) <= 0 {
+// 		hostId = "anonymous"
+// 	}
+// 	api.Api = fmt.Sprintf("/hosts/%s?action=restart", hostId)
+// 	api.Token = true
+
+// 	resp, err := r.PutTrip(ctx, api, reqBody)
+// 	respBody, err1 := HandleResponse(resp, err)
+// 	if err1 != nil {
+// 		err = err1
+// 	} else if respBody != nil {
+// 		jsonErr := json.Unmarshal([]byte(respBody), &response)
+// 		err = JsonError(jsonErr)
+// 	}
+
+// 	return &response, err
+// }
